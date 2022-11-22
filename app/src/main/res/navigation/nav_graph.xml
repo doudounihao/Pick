@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_nav"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.app.qqwpick.ui.home.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_grab"
+        android:name="com.app.qqwpick.ui.home.GrabFragment"
+        android:label="GrabFragment"
+        tools:layout="@layout/fragment_grab" />
+
+    <fragment
+        android:id="@+id/navigation_mine"
+        android:name="com.app.qqwpick.ui.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_user" />
+
+</navigation>

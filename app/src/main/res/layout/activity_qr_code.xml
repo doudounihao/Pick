@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/f5"
+        android:fitsSystemWindows="true">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/view_model_title" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@mipmap/bg_my_download"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <ImageView
+            android:id="@+id/iv_top"
+            android:layout_width="203dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="100dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/scan_ewm"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="0dp"
+            android:background="@mipmap/bg_qrcode_my"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_qr_Code" />
+
+        <ImageView
+            android:id="@+id/iv_qr_Code"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_marginTop="@dimen/dp_15"
+            android:paddingTop="@dimen/dp_5"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_top" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="230dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="Andoird下载二维码"
+            android:textColor="@color/black22"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_qr_Code" />
+
+        <TextView
+            android:id="@+id/tv_change"
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/tv_change_bg"
+            android:gravity="center"
+            android:text="切换"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

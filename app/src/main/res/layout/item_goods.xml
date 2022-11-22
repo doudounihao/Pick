@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.app.qqwpick.data.home.GoodsBean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_10">
+
+        <ImageView
+            android:id="@+id/iv_goods"
+            android:layout_width="@dimen/dp_70"
+            android:layout_height="@dimen/dp_70"
+            android:scaleType="centerInside"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_goods_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@{item.commodityName}"
+            android:textColor="@color/black22"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintLeft_toRightOf="@+id/iv_goods"
+            app:layout_constraintRight_toLeftOf="@+id/tv_price"
+            app:layout_constraintTop_toTopOf="@+id/iv_goods"
+            tools:text="测试已测试已测试已测试已测" />
+
+        <TextView
+            android:id="@+id/tv_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/goods_price+item.price}"
+            android:textColor="@color/colorGray6"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_goods"
+            tools:text="$100" />
+
+        <TextView
+            android:id="@+id/tv_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_2"
+            android:text="@{@string/goods_num+item.num}"
+            android:textColor="@color/colorGray9"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_price"
+            tools:text="x4" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

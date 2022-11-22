@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/select_nav_send"
+        android:title="@string/tab_home" />
+    <item
+        android:id="@+id/navigation_grab"
+        android:icon="@drawable/select_nav_grab"
+        android:title="@string/tab_project" />
+    <item
+        android:id="@+id/navigation_mine"
+        android:icon="@drawable/select_nav_user"
+        android:title="@string/tab_user" />
+</menu>

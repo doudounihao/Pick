@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.app.qqwpick">
+
+    <!--允许获取粗略位置，若用GPS实现定位小蓝点功能则必选-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--允许获取wifi状态改变，用于网络定位，若无gps但仍需实现定位小蓝点功能则此权限必选-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name=".MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.SplashActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.user.AccountActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".ui.home.StoreListActivity" />
+        <activity android:name=".ui.user.LoginActivity" />
+        <activity android:name=".ui.user.SelectRoleActivity" />
+        <activity android:name=".ui.home.HomeActivity" />
+        <activity android:name=".ui.user.ScreatActivity" />
+        <activity android:name=".ui.user.QrCodeActvity" />
+        <activity android:name=".ui.user.MessageSetActivity" />
+        <activity android:name=".ui.user.OrderRemindActivity" />
+        <activity android:name=".ui.home.OrderDetailActivity" />
+        <activity android:name=".ui.home.OrderSearchActivity" />
+        <activity android:name=".ui.home.OrderLoadSearchActivity" />
+        <activity android:name=".ui.user.SystemActivity" />
+        <activity android:name=".ui.user.FinishOrderActivity" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="9faeeaca801778052f2cfafcd8662be9" />
+
+        <service android:name="com.amap.api.location.APSService"></service>
+
+        <service
+            android:name=".service.LooperService"
+            android:enabled="true"
+            android:exported="true"
+            tools:ignore="MissingClass" />
+    </application>
+    <queries>
+        <package android:name="com.autonavi.minimap" />
+    </queries>
+</manifest>

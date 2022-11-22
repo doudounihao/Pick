@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/color_0099ff</item>
+        <item name="colorPrimaryDark">@color/color_0099ff</item>
+        <item name="colorAccent">@color/color_0099ff</item>
+    </style>
+    <!--没有选中的样式-->
+    <style name="bottom_normal_text">
+        <item name="android:textColor">@color/color_3e3e3e</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <!--选中的样式-->
+    <style name="bottom_selected_text">
+        <item name="android:textColor">@color/color_0099ff</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="tv_user_left">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/black22</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingRight">10dp</item>
+    </style>
+
+    <!--选中的样式，可以设置选择的字体颜色，这里只是为了改变选择时的字体大小-->
+    <style name="bottom_tab_title_active">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <!--没有选中的样式，导航默认的字体大小就是12sp-->
+    <style name="bottom_tab_title_inactive">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="cutline">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/color_ec</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+    </style>
+
+    <style name="order_tv_button_empty">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/black_empty_round_bg_24</item>
+        <item name="android:textColor">@color/colorGray6</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="order_tv_button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/tv_next_blue_bg</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="tv_user_right">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:textColor">@color/colorGray9</item>
+        <item name="android:gravity">center|right</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
+
+</resources>
