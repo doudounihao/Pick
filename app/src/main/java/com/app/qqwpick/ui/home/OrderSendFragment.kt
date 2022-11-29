@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.qqwpick.R
 import com.app.qqwpick.adapter.OrderSendListAdapter

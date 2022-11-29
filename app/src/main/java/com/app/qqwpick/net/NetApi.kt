@@ -5,7 +5,9 @@ import com.app.qqwpick.base.BaseResult
 import com.app.qqwpick.data.home.*
 import com.app.qqwpick.data.user.StoreBean
 import com.app.qqwpick.data.user.UserBean
+import com.google.gson.JsonArray
 import okhttp3.RequestBody
+import org.json.JSONArray
 import retrofit2.http.*
 
 interface NetApi {
@@ -108,6 +110,23 @@ interface NetApi {
         @Path("orderNo") orderNo: String
     ): BaseResult<Any>
 
+
+    /**
+     * 三方订单开始配送
+     */
+    @POST("app/api/optimus/self/start-delivery/order")
+    suspend fun startThirdDelivery(
+        @Body route: RequestBody
+    ): BaseResult<Boolean>
+
+    /**
+     * 三方订单确认送达
+     */
+    @POST("app/api/optimus/finsh/order")
+    suspend fun finishThirdDelivery(
+        @Body route: RequestBody
+    ): BaseResult<Boolean>
+
     /**
      * 查询提醒的订单
      */
@@ -116,7 +135,7 @@ interface NetApi {
         @Query("startTime") startTime: String,
         @Query("endTime") endTime: String,
         @Query("outboundStatus") outboundStatus: String
-    ): BaseResult<BasePagingResult<List<OrderListBean>>>
+    ): BaseResult<Int>
 
     /**
      * 查询配送订单
@@ -160,7 +179,8 @@ interface NetApi {
     suspend fun getThirdOrderList(
         @Query("pageIndex") pageSize: Int,
         @Query("pageSize") pageIndex: Int,
-        @Query("status") status: String,//UNCONFIRMED("商家未接单", 1)CONFIRMED("商家已接单", 2)("备货完成", 3)("已发货", 4), ("已完成", 5)("已取消", 6),
+        @Query("orderStatusList") orderStatusList: List<Int>,
+//        @Query("status") status: String,//UNCONFIRMED("商家未接单", 1)CONFIRMED("商家已接单", 2)("备货完成", 3)("已发货", 4), ("已完成", 5)("已取消", 6),
         @Query("orderNo") orderNo: String,//路路通单号
         @Query("channelOrderNo") channelOrderNo: String//中台单号
     ): BaseResult<BasePagingResult<List<OrderThirdListBean>>>

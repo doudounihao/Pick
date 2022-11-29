@@ -3,6 +3,7 @@ package com.app.qqwpick.ui.user
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.lifecycle.observe
 import com.app.qqwpick.BuildConfig
 import com.app.qqwpick.R
 import com.app.qqwpick.base.BaseResult

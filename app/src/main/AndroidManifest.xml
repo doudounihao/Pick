@@ -24,7 +24,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.SplashActivity">
+        <activity
+            android:name=".ui.SplashActivity"
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,6 +47,7 @@
         <activity android:name=".ui.user.OrderRemindActivity" />
         <activity android:name=".ui.home.OrderDetailActivity" />
         <activity android:name=".ui.home.OrderSearchActivity" />
+        <activity android:name=".ui.home.ThirdSearchActivity" />
         <activity android:name=".ui.home.OrderLoadSearchActivity" />
         <activity android:name=".ui.user.SystemActivity" />
         <activity android:name=".ui.user.FinishOrderActivity" />

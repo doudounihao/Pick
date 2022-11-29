@@ -20,32 +20,63 @@
         android:background="@drawable/round_conner_white_bg_10">
 
         <ImageView
+            android:id="@+id/iv_order_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:src="@mipmap/icon_number_jd_right_list"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_item_order_list_fragment_serialNum"
+            app:layout_constraintLeft_toRightOf="@+id/txt_item_order_list_fragment_serialDate"
+            app:layout_constraintTop_toTopOf="@+id/txt_item_order_list_fragment_serialNum" />
+
+        <ImageView
             android:id="@+id/iv_num_bg"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            android:src="@mipmap/bg_number_left_list_blue"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_num"
-            app:layout_constraintLeft_toLeftOf="@+id/tv_num"
-            app:layout_constraintRight_toRightOf="@+id/tv_num"
-            app:layout_constraintTop_toTopOf="@+id/tv_num" />
+            android:layout_height="wrap_content"
+            android:background="@mipmap/bg_number_left_list_blue"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_item_order_list_fragment_serialNum"
+            app:layout_constraintLeft_toLeftOf="@+id/txt_item_order_list_fragment_serialNum"
+            app:layout_constraintRight_toRightOf="@+id/tv_left_size"
+            app:layout_constraintTop_toTopOf="@+id/txt_item_order_list_fragment_serialNum" />
 
         <TextView
-            android:id="@+id/tv_num"
+            android:id="@+id/txt_item_order_list_fragment_serialNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:drawableLeft="@mipmap/icon_number_left_list"
-            android:paddingLeft="@dimen/dp_4"
-            android:paddingTop="@dimen/dp_5"
-            android:paddingRight="@dimen/dp_16"
-            android:paddingBottom="@dimen/dp_5"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="4dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:text="@{item.dailySeq+@string/empty}"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="3 1025" />
+            tools:text="196" />
+
+        <TextView
+            android:id="@+id/txt_item_order_list_fragment_serialDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_item_order_list_fragment_serialNum"
+            app:layout_constraintLeft_toRightOf="@+id/txt_item_order_list_fragment_serialNum"
+            app:layout_constraintTop_toTopOf="@+id/txt_item_order_list_fragment_serialNum"
+            tools:text="(1120)" />
+
+        <TextView
+            android:id="@+id/tv_left_size"
+            android:layout_width="13dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_item_order_list_fragment_serialNum"
+            app:layout_constraintLeft_toRightOf="@+id/txt_item_order_list_fragment_serialDate"
+            app:layout_constraintTop_toTopOf="@+id/txt_item_order_list_fragment_serialNum" />
 
         <com.app.qqwpick.views.AppletDeliveryStatusLayout
             android:id="@+id/delivery_item_order_list_fragment_status"
@@ -158,6 +189,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
+            android:text="@{item.deliveryInfo.currentStatus==4?@string/finish_delivery:@string/start_delivery}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cutline1" />

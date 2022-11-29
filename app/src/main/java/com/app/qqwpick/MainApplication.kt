@@ -32,7 +32,7 @@ class MainApplication : Application() {
         DialogX.init(this)
         DialogX.globalStyle = KongzueStyle.style();
         initUser()
-//        startKeepLive()
+        startKeepLive()
     }
 
     fun initUser() {

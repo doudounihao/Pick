@@ -1,9 +1,17 @@
 package com.app.qqwpick.ui.home
 
 import android.content.Intent
+import android.net.Uri
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.amap.api.services.geocoder.GeocodeQuery
+import com.amap.api.services.geocoder.GeocodeResult
+import com.amap.api.services.geocoder.GeocodeSearch
+import com.amap.api.services.geocoder.GeocodeSearch.OnGeocodeSearchListener
+import com.amap.api.services.geocoder.RegeocodeResult
 import com.app.qqwpick.R
 import com.app.qqwpick.adapter.ThirdOrderSendListAdapter
 import com.app.qqwpick.base.BaseVMFragment
@@ -17,6 +25,8 @@ import com.app.qqwpick.viewmodels.OrdeSendViewModel
 import com.hjq.toast.ToastUtils
 import com.kongzue.dialogx.dialogs.BottomMenu
 import com.kongzue.dialogx.dialogs.MessageDialog
+import com.kongzue.dialogx.interfaces.DialogLifecycleCallback
+import com.kongzue.dialogx.interfaces.OnBindView
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,26 +61,26 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
             getData()
         }
         mAdapter.setOnItemClickListener { adapter, view, position ->
-            var intent = Intent(requireContext(), OrderDetailActivity::class.java)
-            intent.putExtra("bean", mAdapter.getItem(position))
-            startActivity(intent)
+//            var intent = Intent(requireContext(), OrderDetailActivity::class.java)
+//            intent.putExtra("bean", mAdapter.getItem(position))
+//            startActivity(intent)
         }
         mAdapter.addChildClickViewIds(R.id.tv_receive_address, R.id.tv_send, R.id.tv_call_phone)
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
             var bean = mAdapter.getItem(position)
             when (view.id) {
                 R.id.tv_receive_address -> {
-                    toMap(bean.receiverAddress, "", "")
+                    toMap(bean.receiverAddress)
                 }
                 R.id.tv_send -> {
-//                    if ((bean.deliveryStartTime?.length ?: 0) == 0) {
-//                        viewModel.startDelivery(bean.orderNo)
-//                    } else {
-//                        showDialog(bean.orderSplitNo)
-//                    }
+                    if (bean.deliveryInfo.currentStatus == 4) {
+                        showDialog(bean.orderNo)
+                    } else {
+                        viewModel.startThirdDelivery(bean.orderNo)
+                    }
                 }
                 R.id.tv_call_phone -> {
-                    showCallDialog()
+                    showCallDialog(bean)
                 }
             }
         }
@@ -138,7 +148,7 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
             }
         })
 
-        viewModel.startResult.observe(this, {
+        viewModel.stratThirdDelivery.observe(this, {
             when (it.dataStatus) {
                 DataStatus.STATE_LOADING -> {
                     showLoading()
@@ -154,7 +164,7 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
             }
         })
 
-        viewModel.completeResult.observe(this, {
+        viewModel.finishThirdDelivery.observe(this, {
             when (it.dataStatus) {
                 DataStatus.STATE_LOADING -> {
                     showLoading()
@@ -181,34 +191,65 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
         }
     }
 
-    private fun toMap(address: String, latitude: String, longtitude: String) {
-        if (ActivityUtil.isInstallApk("com.autonavi.minimap")) {
-            val intent = Intent.getIntent(
-                "androidamap://navi?sourceApplication=&poiname=" + address + "&lat=" + latitude
-                        + "&lon=" + longtitude + "&dev=0"
-            )
-            startActivity(intent)
-        } else {
-            ToastUtils.show("没有安装高德地图")
-        }
+    private fun toMap(address: String) {
+        val geocodeSearch = GeocodeSearch(context)
+        geocodeSearch.setOnGeocodeSearchListener(object : OnGeocodeSearchListener {
+            override fun onRegeocodeSearched(regeocodeResult: RegeocodeResult, i: Int) {}
+            override fun onGeocodeSearched(geocodeResult: GeocodeResult, i: Int) {
+                if (i == 1000) {
+                    if (geocodeResult != null && geocodeResult.geocodeAddressList != null && geocodeResult.geocodeAddressList.size > 0
+                    ) {
+                        val geocodeAddress =
+                            geocodeResult.geocodeAddressList[0]
+                        val latitude =
+                            geocodeAddress.latLonPoint.latitude //纬度
+                        val longititude =
+                            geocodeAddress.latLonPoint.longitude //经度
+                        if (ActivityUtil.isInstallApk("com.autonavi.minimap")) {
+                            val intent = Intent.getIntent(
+                                "androidamap://navi?sourceApplication=&poiname=" + address + "&lat=" + latitude
+                                        + "&lon=" + longititude + "&dev=0"
+                            )
+                            startActivity(intent)
+                        } else {
+                            ToastUtils.show("没有安装高德地图")
+                        }
+                    } else {
+                        ToastUtils.show("地址名出错");
+                    }
+                }
+            }
+        })
+        val geocodeQuery = GeocodeQuery(address, "29")
+        geocodeSearch.getFromLocationNameAsyn(geocodeQuery)
     }
 
     fun showDialog(orderNo: String) {
         MessageDialog.build()
-            .setTitle("请确认您是否送达")
-            .setMessage("")
-            .setOkButton("确认送达")
-            .setOkButton { baseDialog, v ->
-                viewModel.completeDelivery(orderNo)
-                false
-            }
             .setCancelable(false)
-            .setCancelButton("取消")
-            .show()
+            .setCustomView(object : OnBindView<MessageDialog?>(R.layout.sure_order) {
+                override fun onBind(dialog: MessageDialog?, v: View) {
+                    var tvCancel = v.findViewById<TextView>(R.id.tv_cancel)
+                    tvCancel.setOnClickListener {
+                        dialog?.dismiss()
+                    }
+                    var tvSure = v.findViewById<TextView>(R.id.tv_sure)
+                    tvSure.setOnClickListener {
+                        dialog?.dismiss()
+                        viewModel.finishThirdDelivery(orderNo)
+                    }
+                }
+            }).setMaskColor(getResources().getColor(R.color.black30))
+            .setDialogLifecycleCallback(object : DialogLifecycleCallback<MessageDialog>() {
+                override fun onShow(dialog: MessageDialog?) {
+                    super.onShow(dialog)
+                    dialog?.getDialogImpl()?.bkg?.setBackgroundResource(R.drawable.round_conner_white_bg_10)
+                }
+            }).show()
     }
 
-    fun showCallDialog() {
-        BottomMenu.show(arrayOf("收货电话", "会员电话", "取消"))
+    fun showCallDialog(bean: OrderThirdListBean) {
+        BottomMenu.show(arrayOf("收货电话", "取消"))
             .setCancelable(false)
             .setOnMenuItemClickListener(object : OnMenuItemClickListener<BottomMenu?> {
                 override fun onClick(
@@ -216,7 +257,13 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     text: CharSequence?,
                     index: Int
                 ): Boolean {
-                    ToastUtils.show(text)
+                    if (text?.equals("收货电话") == true) {
+                        var intent = Intent()
+                        intent.action = Intent.ACTION_DIAL//dial是拨号的意思
+                        intent.data =
+                            Uri.parse("tel:" + bean.receiverPrivacyPhone)//这个tel不能改，后面的数字可以随便改
+                        startActivity(intent)
+                    }
                     return false
                 }
             })

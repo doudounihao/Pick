@@ -2,6 +2,7 @@ package com.app.qqwpick.ui.home
 
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.qqwpick.R
 import com.app.qqwpick.adapter.OrderLoadListAdapter

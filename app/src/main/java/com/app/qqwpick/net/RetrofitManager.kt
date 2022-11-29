@@ -58,12 +58,12 @@ class RetrofitManager private constructor() {
             .followRedirects(false)
 //            .cache(Cache(BaseApp.cacheDir, Long.MAX_VALUE))
             .cookieJar(SimpleCookieJar())
-            .hostnameVerifier { hostname, session ->
-                if (hostNames != null) {
-                    listOf(*hostNames!!)
-                        .contains(hostname)
-                } else HttpsURLConnection.getDefaultHostnameVerifier().verify(hostname, session)
-            }
+//            .hostnameVerifier { hostname, session ->
+//                if (hostNames != null) {
+//                    listOf(*hostNames!!)
+//                        .contains(hostname)
+//                } else HttpsURLConnection.getDefaultHostnameVerifier().verify(hostname, session)
+//            }
             .sslSocketFactory(sslContext.socketFactory, trustManager)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .addInterceptor { chain ->

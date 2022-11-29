@@ -142,4 +142,5 @@ dependencies {
     implementation "com.github.kongzue.DialogX:DialogX:0.0.46"
     implementation "com.github.kongzue.DialogX:DialogXKongzueStyle:0.0.46"
     implementation 'com.fanjun:keeplive:1.1.22'
+    implementation("org.greenrobot:eventbus:3.3.1")
 }

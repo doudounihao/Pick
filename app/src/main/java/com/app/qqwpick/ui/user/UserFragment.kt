@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.observe
 import com.app.qqwpick.R
 import com.app.qqwpick.base.BaseResult
 import com.app.qqwpick.base.BaseVMFragment

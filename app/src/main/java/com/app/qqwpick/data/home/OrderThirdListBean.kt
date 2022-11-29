@@ -25,7 +25,8 @@ data class OrderThirdListBean(
     val storeName: String,
     val storeNo: String,
     val totalCommodityNum: Int,
-    val totalWeight: Int
+    val totalWeight: Int,
+    val deliveryInfo: DeliveryInfoBean
 ) : Serializable {
 
     @JvmName("getSendTime")

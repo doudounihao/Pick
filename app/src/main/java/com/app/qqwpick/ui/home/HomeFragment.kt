@@ -57,6 +57,10 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
                     var intent = Intent(context, OrderLoadSearchActivity::class.java)
                     startActivity(intent)
                 }
+                3 -> {
+                    var intent = Intent(context, ThirdSearchActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }

@@ -1,31 +1,29 @@
 package com.app.qqwpick.service
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.SoundPool
-import android.os.Binder
-import android.os.Build
-import android.os.IBinder
+import android.media.*
+import android.media.AudioManager.OnAudioFocusChangeListener
+import android.os.*
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.observe
 import com.amap.api.location.AMapLocation
 import com.app.qqwpick.MainApplication
 import com.app.qqwpick.R
-import com.app.qqwpick.base.BasePagingResult
 import com.app.qqwpick.base.StateLiveData
 import com.app.qqwpick.data.PickRepository
-import com.app.qqwpick.data.home.OrderListBean
 import com.app.qqwpick.data.user.UserBean
 import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.util.*
-import com.hjq.toast.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -81,6 +79,7 @@ class LooperService : Service(), LifecycleOwner {
         grabNum.removeObservers(this)
         isLooper = false
         threadPool.shutdown()
+        handler.removeCallbacksAndMessages(null)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -117,6 +116,8 @@ class LooperService : Service(), LifecycleOwner {
             SoundPool(10, AudioManager.STREAM_SYSTEM, 0)
         }
         soundMap.put(1, soundpool!!.load(MainApplication.getInstance(), R.raw.sendremind, 1))
+        soundMap.put(2, soundpool!!.load(MainApplication.getInstance(), R.raw.qd_message, 1))
+        soundMap.put(3, soundpool!!.load(MainApplication.getInstance(), R.raw.cs_message, 1))
     }
 
     private fun startLooper() {
@@ -138,7 +139,7 @@ class LooperService : Service(), LifecycleOwner {
 
     var grabNum = StateLiveData<Int>()
     var isUpload = StateLiveData<Boolean>()
-    var remindList = StateLiveData<BasePagingResult<List<OrderListBean>>>()
+    var remindOrder = StateLiveData<Int>()
 
     fun getdata() {
         if (SpUtils.getBoolean(GRAB_ORDER_REMIND_SWITCH) == true) {
@@ -170,7 +171,7 @@ class LooperService : Service(), LifecycleOwner {
         if (SpUtils.getBoolean(NEW_ORDER_REMIND_SWITCH) == true) {
             startTime = DateUtils.getCurrentTime1()
             GlobalScope.launch {
-                re.getRemindOrderList(startTime, endTime, "3", remindList)
+                re.getRemindOrderList(startTime, endTime, "3", remindOrder)
             }
         }
     }
@@ -181,16 +182,28 @@ class LooperService : Service(), LifecycleOwner {
                 DataStatus.STATE_ERROR -> {
                 }
                 DataStatus.STATE_SUCCESS -> {
+                    if (it.data!! > 0) {
+                        val message = Message.obtain()
+                        message.what = 2
+                        handler.sendMessageDelayed(message, 15000)
+                        EventBus.getDefault()
+                            .postSticky(MessageEvent(MessageType.ShowGrab).put(it.data!!))
+                    }
                 }
             }
         })
 
-        remindList.observe(this, {
+        remindOrder.observe(this, {
             when (it.dataStatus) {
                 DataStatus.STATE_ERROR -> {
                     endTime = startTime
                 }
                 DataStatus.STATE_SUCCESS -> {
+                    if (it.data!! > 0) {
+                        val message = Message.obtain()
+                        message.what = 1
+                        handler.sendMessageDelayed(message, 15000)
+                    }
                     endTime = startTime
                 }
             }
@@ -209,4 +222,71 @@ class LooperService : Service(), LifecycleOwner {
         return mLifecycleRegistry
     }
 
+    @SuppressLint("HandlerLeak")
+    private var handler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            try {
+                if (msg.what == 1) { //订单提醒
+                    var status = SpUtils.getString(NEW_ORDER_REMIND_SWITCH_TYPE) ?: ""
+                    if (REMIND_TYPE_ONE.equals(status)) { //系统提醒
+                        val uri =
+                            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                        val rt = RingtoneManager.getRingtone(MainApplication.getInstance(), uri)
+                        rt.play()
+                    } else if (REMIND_TYPE_TWO.equals(status)) { //人工语音
+                        if (soundpool != null) {
+                            handleNavStart()
+                            soundpool!!.play(soundMap[1]!!, 1f, 1f, 1, 0, 1f)
+                            this.postDelayed({ handleNavEnd() }, 5000)
+                        }
+                    }
+                } else if (msg.what == 2) { //抢单订单
+                    var status = SpUtils.getString(GRAB_ORDER_REMIND_SWITCH_TYPE) ?: ""
+                    if (REMIND_TYPE_ONE.equals(status)) { //系统提醒
+                        val uri =
+                            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                        val rt = RingtoneManager.getRingtone(MainApplication.getInstance(), uri)
+                        rt.play()
+                    } else if (REMIND_TYPE_TWO.equals(status)) { //人工语音
+                        if (soundpool != null) {
+                            handleNavStart()
+                            soundpool!!.play(soundMap[2]!!, 1f, 1f, 1, 0, 1f)
+                            this.postDelayed({ handleNavEnd() }, 5000)
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+            }
+        }
+    }
+
+    private fun handleNavStart() {
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && mAudioManager != null) {
+                val naviFocusRequest =
+                    AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                        .setOnAudioFocusChangeListener(mNavFocusListener)
+                        .setAudioAttributes(mNavAudioAttrib!!)
+                        .setFocusGain(AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK).build()
+                mAudioManager!!.requestAudioFocus(naviFocusRequest)
+            }
+        } catch (e: java.lang.Exception) {
+            Log.e("looperservice", "Failed to set active focus", e)
+        }
+    }
+
+    private fun handleNavEnd() {
+        if (mAudioManager != null) {
+            mAudioManager!!.abandonAudioFocus(mNavFocusListener)
+        }
+    }
+
+    private val mNavFocusListener =
+        OnAudioFocusChangeListener { focusChange ->
+            Log.i(
+                "looperservice",
+                "Nav focus change:$focusChange"
+            )
+        }
 }

@@ -56,3 +56,4 @@ const val ANDROID_EWM_URL = "android_ewm_url"
 const val SCREAT_URL = "http://agreement.quanqiuwa.com/privacy_qqw_peisong.html"
 
 const val BASE_URL = "http://dev-express.quanqiuwa.com"
+//const val BASE_URL = "https://fresh-express.quanqiuwa.com"

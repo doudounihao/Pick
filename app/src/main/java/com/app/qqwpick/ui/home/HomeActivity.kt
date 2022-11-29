@@ -1,5 +1,6 @@
 package com.app.qqwpick.ui.home
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
@@ -7,15 +8,17 @@ import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphNavigator
 import androidx.navigation.NavigatorProvider
 import androidx.navigation.fragment.NavHostFragment
-import com.amap.api.location.AMapLocation
 import com.app.qqwpick.R
 import com.app.qqwpick.base.BaseVMActivity
 import com.app.qqwpick.databinding.ActivityHomeBinding
 import com.app.qqwpick.ui.user.UserFragment
 import com.app.qqwpick.util.FixFragmentNavigator
-import com.app.qqwpick.util.LocationUtils
-import com.hjq.toast.ToastUtils
+import com.app.qqwpick.util.MessageEvent
+import com.app.qqwpick.util.MessageType
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import update.UpdateAppUtils
 
 
@@ -27,6 +30,28 @@ class HomeActivity : BaseVMActivity<ActivityHomeBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)//注册，重复注册会导致崩溃
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)//解绑
+    }
+
+    //接收消息
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onMessageEvent(event: MessageEvent) {
+        when (event.type) {
+            MessageType.ShowGrab -> {
+                val badge = mBinding.bottomNav.getOrCreateBadge(R.id.navigation_grab)
+                badge.number = event.getInt()
+                badge.backgroundColor = Color.RED
+            }
         }
     }
 

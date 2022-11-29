@@ -11,6 +11,7 @@ import com.app.qqwpick.data.user.UserBean
 import com.app.qqwpick.net.NetApi
 import com.app.qqwpick.util.STORE_ID
 import com.app.qqwpick.util.SpUtils
+import com.app.qqwpick.util.USER_BEAN
 import com.app.qqwpick.util.USER_JOB_NUMBER
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -185,7 +186,7 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
         startTime: String,
         endTime: String,
         outboundStatus: String,
-        result: StateLiveData<BasePagingResult<List<OrderListBean>>>
+        result: StateLiveData<Int>
     ) {
         executeRequest(
             { api.getRemindOrderList(startTime, endTime, outboundStatus) },
@@ -200,9 +201,41 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
         channelOrderNo: String,
         result: StateLiveData<BasePagingResult<List<OrderThirdListBean>>>
     ) {
+        val list = mutableListOf<Int>()
+        list.add(4)
+        list.add(5)
         executeRequest(
-            { api.getThirdOrderList(pageIndex, pageSize, "2", orderNo, channelOrderNo) },
+            {
+                api.getThirdOrderList(
+                    pageIndex,
+                    pageSize,
+                    list,
+                    orderNo,
+                    channelOrderNo
+                )
+            },
             result
         )
+    }
+
+    suspend fun startThirdDelivery(orderNo: String, result: StateLiveData<Boolean>) {
+        val parm = JSONObject()
+        parm.put("orderNo", orderNo)
+        val requestBody = RequestBody.create(
+            "application/json".toMediaTypeOrNull(),
+            parm.toString()
+        )
+        executeRequest({ api.startThirdDelivery(requestBody) }, result)
+    }
+
+    suspend fun finishThirdDelivery(orderNo: String, result: StateLiveData<Boolean>) {
+        val parm = JSONObject()
+        parm.put("orderNo", orderNo)
+        parm.put("courierPhone", SpUtils.getParcelable<UserBean>(USER_BEAN)?.phone.toString())
+        val requestBody = RequestBody.create(
+            "application/json".toMediaTypeOrNull(),
+            parm.toString()
+        )
+        executeRequest({ api.finishThirdDelivery(requestBody) }, result)
     }
 }

@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.viewModels
+import androidx.lifecycle.observe
 import com.app.qqwpick.R
 import com.app.qqwpick.base.BaseResult
 import com.app.qqwpick.base.BaseVMActivity

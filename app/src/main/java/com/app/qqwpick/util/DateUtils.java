@@ -6,6 +6,14 @@ package com.app.qqwpick.util;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+
+import com.amap.api.services.geocoder.GeocodeAddress;
+import com.amap.api.services.geocoder.GeocodeQuery;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeResult;
+import com.google.zxing.common.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -895,5 +903,45 @@ public class DateUtils {
         temp = date.getTime();
         return temp;
     }
+
+    /**
+     * 将事件截取为月日
+     *
+     * @param time
+     * @return
+     */
+    public static String getMonthAndDay(String time) {
+        StringBuilder sb = new StringBuilder();
+        if (!isEmpty(time) && time.contains(" ")) {
+            String[] s = time.split(" ");
+            if (s[0].contains("-")) {
+                String[] split = s[0].split("-");
+                if (split != null && split.length >= 3) {
+                    sb.append(split[1]).append(split[2]);
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 判断给定字符串是否空白串。 空白串是指由空格、制表符、回车符、换行符组成的字符串 若输入字符串为null或空字符串，返回true
+     *
+     * @param input
+     * @return boolean
+     */
+    public static boolean isEmpty(String input) {
+        if (input == null || "".equals(input))
+            return true;
+
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
 
