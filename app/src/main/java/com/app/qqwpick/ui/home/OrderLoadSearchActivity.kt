@@ -1,5 +1,6 @@
 package com.app.qqwpick.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -14,6 +15,7 @@ import com.app.qqwpick.base.BaseVMActivity
 import com.app.qqwpick.data.home.OrderLoadListBean
 import com.app.qqwpick.databinding.ActivityOrderLoadSearchBinding
 import com.app.qqwpick.net.DataStatus
+import com.app.qqwpick.util.ActivityUtil
 import com.app.qqwpick.util.ORDER_FIRST_INDEX
 import com.app.qqwpick.util.ORDER_PAGE_SIZE
 import com.app.qqwpick.viewmodels.OrdeSendViewModel
@@ -51,9 +53,13 @@ class OrderLoadSearchActivity : BaseVMActivity<ActivityOrderLoadSearchBinding>()
             getData()
         }
 
+        mAdapter.addChildClickViewIds(R.id.tv_receive_address_tip)
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
+            var bean = mAdapter.getItem(position)
             when (view.id) {
-
+                R.id.tv_receive_address_tip -> {
+                    toMap(bean.receiverAddress, bean.lat, bean.lng)
+                }
             }
         }
 
@@ -69,6 +75,18 @@ class OrderLoadSearchActivity : BaseVMActivity<ActivityOrderLoadSearchBinding>()
             }
             false
         })
+    }
+
+    private fun toMap(address: String, latitude: String, longtitude: String) {
+        if (ActivityUtil.isInstallApk("com.autonavi.minimap")) {
+            val intent = Intent.getIntent(
+                "androidamap://navi?sourceApplication=&poiname=" + address + "&lat=" + latitude
+                        + "&lon=" + longtitude + "&dev=0"
+            )
+            startActivity(intent)
+        } else {
+            ToastUtils.show("没有安装高德地图")
+        }
     }
 
     private fun getData() {

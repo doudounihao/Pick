@@ -1,6 +1,7 @@
 package com.app.qqwpick.ui
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.qqwpick.R
@@ -16,6 +17,7 @@ import com.hjq.permissions.XXPermissions
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //强制竖屏
         setContentView(R.layout.activity_splash)
         var per = arrayOf(
             Permission.ACCESS_FINE_LOCATION,

@@ -16,6 +16,13 @@ class OrderSendListAdapter(list: MutableList<OrderListBean>) :
     override fun convert(holder: BaseDataBindingHolder<ItemOrderSendBinding>, item: OrderListBean) {
         val binding = holder.dataBinding
         binding?.item = item
+        val s: Array<String> = item.serialNum.split(" ").toTypedArray()
+        var s1 = s[1]
+        s1 = s1.replace("#".toRegex(), "")
+        binding?.tvNum?.setText(s1)
+        val str = StringBuilder()
+        str.replace(0, str.length, "(").append(s[2]).append(")")
+        binding?.txtItemOrderListFragmentSerialDate?.setText(str.toString())
         val timeStr: Int = DateUtils.calculateTime(item.bespokeTimeTo)
         if (timeStr < 120) {
             binding?.deliveryItemOrderListFragmentStatus?.setVisibility(View.VISIBLE)

@@ -203,7 +203,6 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
     ) {
         val list = mutableListOf<Int>()
         list.add(4)
-        list.add(5)
         executeRequest(
             {
                 api.getThirdOrderList(

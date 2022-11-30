@@ -49,8 +49,13 @@ class HomeActivity : BaseVMActivity<ActivityHomeBinding>() {
         when (event.type) {
             MessageType.ShowGrab -> {
                 val badge = mBinding.bottomNav.getOrCreateBadge(R.id.navigation_grab)
-                badge.number = event.getInt()
-                badge.backgroundColor = Color.RED
+                if (event.getInt() > 0) {
+                    badge.setVisible(true)
+                    badge.number = event.getInt()
+                    badge.backgroundColor = Color.RED
+                } else {
+                    badge.setVisible(false)
+                }
             }
         }
     }
@@ -62,7 +67,11 @@ class HomeActivity : BaseVMActivity<ActivityHomeBinding>() {
         //创建自定义的Fragment导航器
         //创建自定义的Fragment导航器
         val fragmentNavigator =
-            FixFragmentNavigator(this, navHostFragment.childFragmentManager, navHostFragment.id)
+            FixFragmentNavigator(
+                this,
+                navHostFragment.childFragmentManager,
+                navHostFragment.id
+            )
         //获取导航器提供者
         val provider = navController!!.navigatorProvider
         //把自定义的Fragment导航器添加进去
@@ -84,13 +93,16 @@ class HomeActivity : BaseVMActivity<ActivityHomeBinding>() {
         mBinding.bottomNav.itemTextAppearanceInactive = R.style.bottom_normal_text;
 
         val bottombarView: View = mBinding.bottomNav.getChildAt(0)
-        bottombarView.findViewById<View>(R.id.navigation_home).setOnLongClickListener { v -> true }
+        bottombarView.findViewById<View>(R.id.navigation_home)
+            .setOnLongClickListener { v -> true }
 
         val bottombarView1: View = mBinding.bottomNav.getChildAt(0)
-        bottombarView1.findViewById<View>(R.id.navigation_grab).setOnLongClickListener { v -> true }
+        bottombarView1.findViewById<View>(R.id.navigation_grab)
+            .setOnLongClickListener { v -> true }
 
         val bottombarView2: View = mBinding.bottomNav.getChildAt(0)
-        bottombarView2.findViewById<View>(R.id.navigation_mine).setOnLongClickListener { v -> true }
+        bottombarView2.findViewById<View>(R.id.navigation_mine)
+            .setOnLongClickListener { v -> true }
 //        val badge = mBinding.bottomNav.getOrCreateBadge(R.id.navigation_grab)
 //        badge.number = 10
 //        badge.backgroundColor = Color.RED
@@ -100,7 +112,8 @@ class HomeActivity : BaseVMActivity<ActivityHomeBinding>() {
     private fun initNavGraph(
         provider: NavigatorProvider,
         fragmentNavigator: FixFragmentNavigator
-    ): NavGraph {
+    )
+            : NavGraph {
         val navGraph = NavGraph(NavGraphNavigator(provider))
 
         //用自定义的导航器来创建目的地
@@ -143,7 +156,8 @@ class HomeActivity : BaseVMActivity<ActivityHomeBinding>() {
         }
     }
 
-    override fun getLayoutId(): Int {
+    override fun getLayoutId()
+            : Int {
         return R.layout.activity_home
     }
 

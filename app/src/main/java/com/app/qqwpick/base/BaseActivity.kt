@@ -1,5 +1,6 @@
 package com.app.qqwpick.base
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.app.qqwpick.util.ActivityUtil
@@ -11,6 +12,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //强制竖屏
         mLoadingDialog = LoadingDialog(this)
         ActivityUtil.addActivity(this)
         StatusBarUtil.setTransparentForWindow(this)

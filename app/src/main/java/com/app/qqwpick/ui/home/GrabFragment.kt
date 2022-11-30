@@ -59,9 +59,9 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.getGrabNum()
+    override fun initData() {
+        super.initData()
+        getData()
     }
 
     fun getData() {
@@ -72,19 +72,19 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
     override fun startObserver() {
         super.startObserver()
 
-        viewModel.grabNum.observe(this, {
-            when (it.dataStatus) {
-                DataStatus.STATE_ERROR -> {
-                    toast(it.exception!!.msg)
-                }
-                DataStatus.STATE_SUCCESS -> {
-                    mBinding.tvNum.text = it.data.toString()
-                    if (it.data!! > 0) {
-                        getData()
-                    }
-                }
-            }
-        })
+//        viewModel.grabNum.observe(this, {
+//            when (it.dataStatus) {
+//                DataStatus.STATE_ERROR -> {
+//                    toast(it.exception!!.msg)
+//                }
+//                DataStatus.STATE_SUCCESS -> {
+//                    mBinding.tvNum.text = it.data.toString()
+//                    if (it.data!! > 0) {
+//                        getData()
+//                    }
+//                }
+//            }
+//        })
 
         viewModel.grabBeanList.observe(this, {
             when (it.dataStatus) {
@@ -106,6 +106,7 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                                     mBinding.recyclerData
                                 )
                             )
+                            mBinding.tvNum.text = "0"
                             return@observe
                         }
                         beanList.clear()
@@ -118,9 +119,11 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                     } else {
                         mAdapter.loadMoreModule.loadMoreComplete()
                     }
+                    mBinding.tvNum.text = beanList.size.toString()
                 }
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()
+                    mBinding.tvNum.text = "0"
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         //必须要先把数组设置为空
                         mAdapter.setNewInstance(mutableListOf())
