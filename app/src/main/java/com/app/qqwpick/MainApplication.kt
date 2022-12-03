@@ -42,14 +42,35 @@ class MainApplication : Application() {
         if (SpUtils.getBooleanTrue(GRAB_ORDER_REMIND_SWITCH) ?: true) {
             SpUtils.put(GRAB_ORDER_REMIND_SWITCH, true)
         }
+        if (SpUtils.getBooleanTrue(THIRD_ORDER_REMIND_SWITCH) ?: true) {
+            SpUtils.put(THIRD_ORDER_REMIND_SWITCH, true)
+        }
+        if (SpUtils.getBooleanTrue(ORDER_UNSEND_MINUTE_SWITCH) ?: true) {
+            SpUtils.put(ORDER_UNSEND_MINUTE_SWITCH, true)
+        }
+        if (SpUtils.getBooleanTrue(THIRD_ORDER_UNSEND_MINUTE_SWITCH) ?: true) {
+            SpUtils.put(THIRD_ORDER_UNSEND_MINUTE_SWITCH, true)
+        }
+
         if ((SpUtils.getString(NEW_ORDER_REMIND_SWITCH_TYPE) ?: "").isNullOrEmpty()) {
             SpUtils.put(NEW_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_TWO)
         }
         if ((SpUtils.getString(GRAB_ORDER_REMIND_SWITCH_TYPE) ?: "").isNullOrEmpty()) {
             SpUtils.put(GRAB_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_TWO)
         }
+        if ((SpUtils.getString(THIRD_ORDER_REMIND_SWITCH_TYPE) ?: "").isNullOrEmpty()) {
+            SpUtils.put(THIRD_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_TWO)
+        }
+
         if (SpUtils.getBooleanTrue(MAP_OPEN) ?: true) {
             SpUtils.put(MAP_OPEN, true)
+        }
+
+        if ((SpUtils.getString(ORDER_UNSEND_MINUTE) ?: "").isNullOrEmpty()) {
+            SpUtils.put(ORDER_UNSEND_MINUTE, UNSEND_MINUTE)
+        }
+        if ((SpUtils.getString(THIRD_ORDER_UNSEND_MINUTE) ?: "").isNullOrEmpty()) {
+            SpUtils.put(THIRD_ORDER_UNSEND_MINUTE, UNSEND_MINUTE)
         }
     }
 

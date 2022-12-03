@@ -83,7 +83,7 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
     }
 
     suspend fun getVersion(result: StateLiveData<VersionBean>) {
-        executeRequest({ api.getVersion(BuildConfig.VERSION_NAME) }, result)
+        executeRequest({ api.getVersion("2.1.0") }, result)
     }
 
     suspend fun getGrabNum(result: StateLiveData<Int>) {
@@ -220,6 +220,9 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
     suspend fun startThirdDelivery(orderNo: String, result: StateLiveData<Boolean>) {
         val parm = JSONObject()
         parm.put("orderNo", orderNo)
+        parm.put("courierPhone", SpUtils.getParcelable<UserBean>(USER_BEAN)?.phone.toString())
+        parm.put("courierId", SpUtils.getParcelable<UserBean>(USER_BEAN)?.id.toString())
+        parm.put("courierName", SpUtils.getParcelable<UserBean>(USER_BEAN)?.name.toString())
         val requestBody = RequestBody.create(
             "application/json".toMediaTypeOrNull(),
             parm.toString()
@@ -231,10 +234,22 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
         val parm = JSONObject()
         parm.put("orderNo", orderNo)
         parm.put("courierPhone", SpUtils.getParcelable<UserBean>(USER_BEAN)?.phone.toString())
+        parm.put("courierId", SpUtils.getParcelable<UserBean>(USER_BEAN)?.id.toString())
+        parm.put("courierName", SpUtils.getParcelable<UserBean>(USER_BEAN)?.name.toString())
         val requestBody = RequestBody.create(
             "application/json".toMediaTypeOrNull(),
             parm.toString()
         )
         executeRequest({ api.finishThirdDelivery(requestBody) }, result)
+    }
+
+    suspend fun getThirdDetail(orderNo: String, result: StateLiveData<ThirdDetailBean>) {
+        val parm = JSONObject()
+        parm.put("orderNo", orderNo)
+        val requestBody = RequestBody.create(
+            "application/json".toMediaTypeOrNull(),
+            parm.toString()
+        )
+        executeRequest({ api.getThirdDetail(requestBody) }, result)
     }
 }

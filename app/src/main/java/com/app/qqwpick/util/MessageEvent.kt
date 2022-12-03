@@ -9,7 +9,7 @@ private const val KEY_STRING = "key_string"
 private const val KEY_BOOL = "key_bool"
 private const val KEY_SERIALIZABLE = "key_serializable"
 private const val KEY_PARCELABLE = "key_parcelable"
-
+private const val KEY_LIST = "key_list"
 
 data class MessageEvent(var type: MessageType) {
 
@@ -111,5 +111,6 @@ data class MessageEvent(var type: MessageType) {
 
 enum class MessageType {
     ShowGrab,
-    ShowLog,
+    orderBean,
+    thirdOrderBean
 }

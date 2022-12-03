@@ -44,7 +44,7 @@ open class BaseRepository {
                 ResultState.Error(
                     ResultException(
                         response.code.toString(),
-                        response.msg ?: ""
+                        response.msg ?: response.message ?: ""
                     )
                 )
             } else {
@@ -73,7 +73,7 @@ open class BaseRepository {
                 baseResp.dataStatus = DataStatus.STATE_ERROR
                 baseResp.exception = ResultException(
                     baseResp.code.toString(),
-                    baseResp.msg ?: ""
+                    baseResp.msg ?: baseResp.message ?: ""
                 )
             }
         } catch (e: Exception) {
@@ -124,7 +124,7 @@ open class BaseRepository {
                     baseResp.dataStatus = DataStatus.STATE_ERROR
                     baseResp.exception = ResultException(
                         baseResp.code.toString(),
-                        baseResp.msg ?: ""
+                        baseResp.msg ?: baseResp.message ?: ""
                     )
                 }
                 stateLiveData.postValue(baseResp)

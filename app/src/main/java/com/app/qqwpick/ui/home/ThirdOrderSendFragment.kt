@@ -61,9 +61,9 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
             getData()
         }
         mAdapter.setOnItemClickListener { adapter, view, position ->
-//            var intent = Intent(requireContext(), OrderDetailActivity::class.java)
-//            intent.putExtra("bean", mAdapter.getItem(position))
-//            startActivity(intent)
+            var intent = Intent(requireContext(), ThirdDetailActivity::class.java)
+            intent.putExtra("orderNo", mAdapter.getItem(position).orderNo)
+            startActivity(intent)
         }
         mAdapter.addChildClickViewIds(R.id.tv_receive_address, R.id.tv_send, R.id.tv_call_phone)
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
@@ -109,9 +109,8 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     finishRefresh()
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
+                        beanList.clear()
                         if (it.data?.list.isNullOrEmpty()) {
-                            //必须要先把数组设置为空
-                            mAdapter.setNewInstance(mutableListOf())
                             //如果网络错误了
                             mAdapter.setEmptyView(
                                 getMsgEmptyDataView(
@@ -120,7 +119,6 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                             )
                             return@observe
                         }
-                        beanList.clear()
                     }
                     beanList.addAll(it.data?.list!!)
                     mAdapter.notifyDataSetChanged()
@@ -134,8 +132,7 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
-                        //必须要先把数组设置为空
-                        mAdapter.setNewInstance(mutableListOf())
+                        beanList.clear()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(

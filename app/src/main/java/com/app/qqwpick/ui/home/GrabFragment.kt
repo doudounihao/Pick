@@ -97,9 +97,8 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                     finishRefresh()
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
+                        beanList.clear()
                         if (it.data?.list.isNullOrEmpty()) {
-                            //必须要先把数组设置为空
-                            mAdapter.setNewInstance(mutableListOf())
                             //如果网络错误了
                             mAdapter.setEmptyView(
                                 getMsgEmptyDataView(
@@ -109,7 +108,6 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                             mBinding.tvNum.text = "0"
                             return@observe
                         }
-                        beanList.clear()
                     }
                     beanList.addAll(it.data?.list!!)
                     mAdapter.notifyDataSetChanged()
@@ -125,8 +123,7 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                     finishRefresh()
                     mBinding.tvNum.text = "0"
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
-                        //必须要先把数组设置为空
-                        mAdapter.setNewInstance(mutableListOf())
+                        beanList.clear()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(

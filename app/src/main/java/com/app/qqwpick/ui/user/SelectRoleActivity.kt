@@ -7,6 +7,7 @@ import com.app.qqwpick.base.BaseVMActivity
 import com.app.qqwpick.databinding.ActivitySelectRoleBinding
 import com.app.qqwpick.ui.home.HomeActivity
 import com.app.qqwpick.util.*
+import com.hjq.toast.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,7 +22,7 @@ class SelectRoleActivity : BaseVMActivity<ActivitySelectRoleBinding>() {
     override fun initData() {
         super.initData()
 
-        mBinding.tvPick.setOnClickListener {
+        mBinding.tvSend.setOnClickListener {
             SpUtils.put(ROLE_TYPE, ROLE_SEND)
             goToPage()
         }
@@ -30,13 +31,12 @@ class SelectRoleActivity : BaseVMActivity<ActivitySelectRoleBinding>() {
             goToPage()
         }
 
-        mBinding.tvSend.setOnClickListener {
-            SpUtils.put(ROLE_TYPE, ROLE_GRAB)
-            goToPage()
+        mBinding.tvPick.setOnClickListener {
+            ToastUtils.show("敬请期待")
         }
         mBinding.ivJh.setOnClickListener {
-            SpUtils.put(ROLE_TYPE, ROLE_GRAB)
-            goToPage()
+//            SpUtils.put(ROLE_TYPE, ROLE_GRAB)
+            ToastUtils.show("敬请期待")
         }
     }
 

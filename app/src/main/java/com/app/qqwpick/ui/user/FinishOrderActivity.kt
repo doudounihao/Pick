@@ -91,9 +91,8 @@ class FinishOrderActivity : BaseVMActivity<ActivityFinishOrderBinding>() {
                     finishRefresh()
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
+                        beanList.clear()
                         if (it.data?.list.isNullOrEmpty()) {
-                            //必须要先把数组设置为空
-                            mAdapter.setNewInstance(mutableListOf())
                             //如果网络错误了
                             mAdapter.setEmptyView(
                                 getMsgEmptyDataView(
@@ -102,7 +101,6 @@ class FinishOrderActivity : BaseVMActivity<ActivityFinishOrderBinding>() {
                             )
                             return@observe
                         }
-                        beanList.clear()
                     }
                     beanList.addAll(it.data?.list!!)
                     mAdapter.notifyDataSetChanged()
@@ -116,8 +114,7 @@ class FinishOrderActivity : BaseVMActivity<ActivityFinishOrderBinding>() {
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
-                        //必须要先把数组设置为空
-                        mAdapter.setNewInstance(mutableListOf())
+                        beanList.clear()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(

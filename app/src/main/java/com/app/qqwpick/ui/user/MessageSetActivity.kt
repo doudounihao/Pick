@@ -2,6 +2,8 @@ package com.app.qqwpick.ui.user
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.core.view.isVisible
 import com.app.qqwpick.R
 import com.app.qqwpick.base.BaseVMActivity
@@ -55,12 +57,89 @@ class MessageSetActivity : BaseVMActivity<ActivityMessageSetBinding>() {
             startActivity(intent)
         }
 
+        mBinding.toggleMesRemindThirdOrder.isChecked =
+            SpUtils.getBoolean(THIRD_ORDER_REMIND_SWITCH) ?: false
+        mBinding.layoutMesRemindThirdOrderRemind.isVisible =
+            SpUtils.getBoolean(THIRD_ORDER_REMIND_SWITCH) ?: false
+        mBinding.toggleMesRemindThirdOrder.setOnClickListener {
+            if (mBinding.toggleMesRemindThirdOrder.isChecked) {
+                mBinding.layoutMesRemindThirdOrderRemind.isVisible = true
+                SpUtils.put(THIRD_ORDER_REMIND_SWITCH, true)
+            } else {
+                mBinding.layoutMesRemindThirdOrderRemind.isVisible = false
+                SpUtils.put(THIRD_ORDER_REMIND_SWITCH, false)
+            }
+        }
+        mBinding.layoutMesRemindThirdOrderRemind.setOnClickListener {
+            var intent = Intent(this, OrderRemindActivity::class.java)
+            intent.putExtra("type", THIRD_ORDER_REMIND_SWITCH_TYPE)
+            startActivity(intent)
+        }
+
+
+        mBinding.toggleMesRemindUnsend.isChecked =
+            SpUtils.getBoolean(ORDER_UNSEND_MINUTE_SWITCH) ?: false
+        mBinding.layoutMesRemindUnsend.isVisible =
+            SpUtils.getBoolean(ORDER_UNSEND_MINUTE_SWITCH) ?: false
+        mBinding.toggleMesRemindUnsend.setOnClickListener {
+            if (mBinding.toggleMesRemindUnsend.isChecked) {
+                mBinding.layoutMesRemindUnsend.isVisible = true
+                SpUtils.put(ORDER_UNSEND_MINUTE_SWITCH, true)
+            } else {
+                mBinding.layoutMesRemindUnsend.isVisible = false
+                SpUtils.put(ORDER_UNSEND_MINUTE_SWITCH, false)
+            }
+        }
+        mBinding.etUnsend.setText(SpUtils.getString(ORDER_UNSEND_MINUTE) ?: "5")
+        mBinding.etUnsend.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                SpUtils.put(ORDER_UNSEND_MINUTE, s.toString())
+            }
+        })
+
+        mBinding.toggleMesRemindUnsendThird.isChecked =
+            SpUtils.getBoolean(THIRD_ORDER_UNSEND_MINUTE_SWITCH) ?: false
+        mBinding.layoutMesRemindUnsendThird.isVisible =
+            SpUtils.getBoolean(THIRD_ORDER_UNSEND_MINUTE_SWITCH) ?: false
+        mBinding.toggleMesRemindUnsendThird.setOnClickListener {
+            if (mBinding.toggleMesRemindUnsendThird.isChecked) {
+                mBinding.layoutMesRemindUnsendThird.isVisible = true
+                SpUtils.put(THIRD_ORDER_UNSEND_MINUTE_SWITCH, true)
+            } else {
+                mBinding.layoutMesRemindUnsendThird.isVisible = false
+                SpUtils.put(THIRD_ORDER_UNSEND_MINUTE_SWITCH, false)
+            }
+        }
+        mBinding.etUnsendThird.setText(SpUtils.getString(THIRD_ORDER_UNSEND_MINUTE) ?: "5")
+        mBinding.etUnsendThird.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                SpUtils.put(THIRD_ORDER_UNSEND_MINUTE, s.toString())
+            }
+        })
+
     }
 
     override fun onResume() {
         super.onResume()
         mBinding.tvNewOrder.setText(SpUtils.getString(NEW_ORDER_REMIND_SWITCH_TYPE))
         mBinding.tvGrabSend.setText(SpUtils.getString(GRAB_ORDER_REMIND_SWITCH_TYPE))
+        mBinding.tvThirdSend.setText(SpUtils.getString(THIRD_ORDER_REMIND_SWITCH_TYPE))
     }
 
     override fun getLayoutId(): Int {

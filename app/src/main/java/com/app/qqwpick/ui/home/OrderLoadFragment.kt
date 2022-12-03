@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.qqwpick.R
 import com.app.qqwpick.adapter.OrderLoadListAdapter
 import com.app.qqwpick.base.BaseVMFragment
-import com.app.qqwpick.data.home.OrderListBean
 import com.app.qqwpick.data.home.OrderLoadListBean
 import com.app.qqwpick.databinding.FragmentOrderLoadBinding
 import com.app.qqwpick.net.DataStatus
@@ -97,9 +96,8 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
                     finishRefresh()
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
+                        beanList.clear()
                         if (it.data?.list.isNullOrEmpty()) {
-                            //必须要先把数组设置为空
-                            mAdapter.setNewInstance(mutableListOf())
                             //如果网络错误了
                             mAdapter.setEmptyView(
                                 getMsgEmptyDataView(
@@ -108,7 +106,6 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
                             )
                             return@observe
                         }
-                        beanList.clear()
                     }
                     beanList.addAll(it.data?.list!!)
                     mAdapter.notifyDataSetChanged()
@@ -122,8 +119,7 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
-                        //必须要先把数组设置为空
-                        mAdapter.setNewInstance(mutableListOf())
+                        beanList.clear()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(

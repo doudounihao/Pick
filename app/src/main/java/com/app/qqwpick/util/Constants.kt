@@ -28,6 +28,8 @@ const val ORDER_FIRST_INDEX = 1
 const val ORDER_PAGE_SIZE = 10
 const val SEND_STATUS = "3"
 
+const val UNSEND_MINUTE = "5"
+
 const val REMIND_TYPE_ONE = "系统提醒"//系统提醒
 const val REMIND_TYPE_TWO = "人工语音"//人工语音
 const val REMIND_TYPE_THREE = "静音"//静音
@@ -36,6 +38,12 @@ const val NEW_ORDER_REMIND_SWITCH = "new_order_remind_switch"
 const val NEW_ORDER_REMIND_SWITCH_TYPE = "new_order_remind_switch_type"
 const val GRAB_ORDER_REMIND_SWITCH = "grab_order_remind_switch"
 const val GRAB_ORDER_REMIND_SWITCH_TYPE = "grab_order_remind_switch_type"
+const val THIRD_ORDER_REMIND_SWITCH = "third_order_remind_switch"
+const val THIRD_ORDER_REMIND_SWITCH_TYPE = "third_order_remind_switch_type"
+const val ORDER_UNSEND_MINUTE_SWITCH = "order_unsend_minute_switch"
+const val ORDER_UNSEND_MINUTE = "order_unsend_minute"
+const val THIRD_ORDER_UNSEND_MINUTE_SWITCH = "third_order_unsend_minute_switch"
+const val THIRD_ORDER_UNSEND_MINUTE = "third_order_unsend_minute"
 
 const val MAP_OPEN = "map_open"
 const val USER_BEAN = "user_bean"

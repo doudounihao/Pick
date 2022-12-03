@@ -6,14 +6,6 @@ package com.app.qqwpick.util;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-
-import com.amap.api.services.geocoder.GeocodeAddress;
-import com.amap.api.services.geocoder.GeocodeQuery;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeResult;
-import com.google.zxing.common.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -24,7 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 public class DateUtils {
 

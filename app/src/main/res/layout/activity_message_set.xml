@@ -31,7 +31,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
-                android:text="新订单提醒"
+                android:text="到家到店新订单提醒"
                 android:textColor="@color/black22"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/layout_mes_remind_new_orderRemind"
@@ -110,7 +110,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
-                android:text="抢单提醒"
+                android:text="到家到店抢单提醒"
                 android:textColor="@color/black22"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/layout_mes_remind_grab_orderRemind"
@@ -171,5 +171,285 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_three"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginRight="11dp"
+            android:background="@drawable/round_conner_white_bg_10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_two">
+
+            <TextView
+                android:id="@+id/tv_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="到家到店订单未配送超时提醒"
+                android:textColor="@color/black22"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/layout_mes_remind_unsend"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/toggle_mes_remind_unsend"
+                android:layout_width="45dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:button="@drawable/switch_btn"
+                android:checked="false"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_mes_remind_unsend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_three"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/textView24_unsend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="超时提醒时间选择"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="配送开始前"
+                    android:textColor="@color/colorGray9"
+                    android:textSize="14sp"
+                    app:layout_constraintRight_toLeftOf="@+id/et_unsend"
+                    app:layout_constraintTop_toTopOf="@+id/textView24_unsend" />
+
+                <EditText
+                    android:id="@+id/et_unsend"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:background="@null"
+                    android:drawableBottom="@drawable/et_line_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textColor="#FF5400"
+                    android:textSize="16sp"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_unpick_unit"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_unpick_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="分钟"
+                    android:textColor="@color/colorGray9"
+                    android:textSize="14sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView24_unsend" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_four"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginRight="11dp"
+            android:background="@drawable/round_conner_white_bg_10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_three">
+
+            <TextView
+                android:id="@+id/tv_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="三方订单订单提醒"
+                android:textColor="@color/black22"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/layout_mes_remind_third_orderRemind"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/toggle_mes_remind_third_order"
+                android:layout_width="45dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:button="@drawable/switch_btn"
+                android:checked="false"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_mes_remind_third_orderRemind"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_four"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/textView24_send_third"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="提醒类型"
+                    android:textColor="@color/black22"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_third_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:drawableRight="@mipmap/right"
+                    android:drawablePadding="10dp"
+                    android:text="系统提醒"
+                    android:textColor="@color/colorGray9"
+                    android:textSize="14sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_five"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="11dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginRight="11dp"
+            android:background="@drawable/round_conner_white_bg_10"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_four">
+
+            <TextView
+                android:id="@+id/tv_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="三方订单未配送超时提醒"
+                android:textColor="@color/black22"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/layout_mes_remind_unsend_third"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ToggleButton
+                android:id="@+id/toggle_mes_remind_unsend_third"
+                android:layout_width="45dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:background="@android:color/transparent"
+                android:button="@drawable/switch_btn"
+                android:checked="false"
+                android:textOff=""
+                android:textOn=""
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_mes_remind_unsend_third"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_five"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/textView24_unsend_third"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="超时提醒时间选择"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="配送开始前"
+                    android:textColor="@color/colorGray9"
+                    android:textSize="14sp"
+                    app:layout_constraintRight_toLeftOf="@+id/et_unsend_third"
+                    app:layout_constraintTop_toTopOf="@+id/textView24_unsend_third" />
+
+                <EditText
+                    android:id="@+id/et_unsend_third"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:background="@null"
+                    android:drawableBottom="@drawable/et_line_bg"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textColor="#FF5400"
+                    android:textSize="16sp"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_unsend_third"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_unsend_third"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:text="分钟"
+                    android:textColor="@color/colorGray9"
+                    android:textSize="14sp"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView24_unsend_third" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

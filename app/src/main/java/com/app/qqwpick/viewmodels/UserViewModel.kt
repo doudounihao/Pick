@@ -5,6 +5,7 @@ import com.app.qqwpick.base.BaseViewModel
 import com.app.qqwpick.base.StateLiveData
 import com.app.qqwpick.data.PickRepository
 import com.app.qqwpick.data.home.PersonDetailBean
+import com.app.qqwpick.data.home.VersionBean
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,6 +16,7 @@ class UserViewModel @Inject constructor(val pickRepo: PickRepository) :
 
     var userBean = StateLiveData<PersonDetailBean>()
     var loginOut = StateLiveData<Any>()
+    var versionBean = StateLiveData<VersionBean>()
 
     fun getPersonDetail() {
         viewModelScope.launch {
@@ -25,6 +27,12 @@ class UserViewModel @Inject constructor(val pickRepo: PickRepository) :
     fun loginOut() {
         viewModelScope.launch {
             pickRepo.loginOut(loginOut)
+        }
+    }
+
+    fun getVersion() {
+        viewModelScope.launch {
+            pickRepo.getVersion(versionBean)
         }
     }
 }

@@ -2,7 +2,6 @@ package com.app.qqwpick.ui.user
 
 import android.content.Intent
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.app.qqwpick.R
@@ -37,6 +36,11 @@ class UserFragment : BaseVMFragment<FragmentUserBinding>() {
         mBinding.tvMonthTip.setOnClickListener {
             var intent = Intent(requireContext(), FinishOrderActivity::class.java)
             intent.putExtra("month", "month")
+            startActivity(intent)
+        }
+
+        mBinding.tvUserType.setOnClickListener {
+            val intent = Intent(requireContext(), SelectRoleActivity::class.java)
             startActivity(intent)
         }
 

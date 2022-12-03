@@ -23,6 +23,7 @@ import com.kongzue.dialogx.interfaces.OnBindView
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import extension.visibleOrGone
+import org.greenrobot.eventbus.EventBus
 
 
 @AndroidEntryPoint
@@ -105,9 +106,8 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     finishRefresh()
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
+                        beanList.clear()
                         if (it.data?.list.isNullOrEmpty()) {
-                            //必须要先把数组设置为空
-                            mAdapter.setNewInstance(mutableListOf())
                             //如果网络错误了
                             mAdapter.setEmptyView(
                                 getMsgEmptyDataView(
@@ -116,7 +116,6 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                             )
                             return@observe
                         }
-                        beanList.clear()
                     }
                     beanList.addAll(it.data?.list!!)
                     mAdapter.notifyDataSetChanged()
@@ -126,12 +125,14 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     } else {
                         mAdapter.loadMoreModule.loadMoreComplete()
                     }
+//                    EventBus.getDefault()
+//                        .postSticky(MessageEvent(MessageType.orderBean).put())
                 }
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         //必须要先把数组设置为空
-                        mAdapter.setNewInstance(mutableListOf())
+                        beanList.clear()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(

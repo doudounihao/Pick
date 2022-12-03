@@ -9,7 +9,10 @@ import com.google.gson.annotations.SerializedName
 class BaseResult<T> {
     //错误码0为正确
     var code: String = "-1"
+
     var msg: String? = null
+
+    var message: String? = null
 
     //返回数据
     var data: T? = null

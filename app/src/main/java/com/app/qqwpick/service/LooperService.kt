@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.*
 import android.media.AudioManager.OnAudioFocusChangeListener
 import android.os.*
@@ -17,6 +18,8 @@ import com.app.qqwpick.MainApplication
 import com.app.qqwpick.R
 import com.app.qqwpick.base.StateLiveData
 import com.app.qqwpick.data.PickRepository
+import com.app.qqwpick.data.home.OrderListBean
+import com.app.qqwpick.data.home.OrderThirdListBean
 import com.app.qqwpick.data.user.UserBean
 import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.util.*
@@ -24,6 +27,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import java.util.*
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -43,6 +48,14 @@ class LooperService : Service(), LifecycleOwner {
     private var soundMap = HashMap<Int, Int>()
     private var mAudioManager: AudioManager? = null
     private val threadPool = Executors.newFixedThreadPool(1)
+
+    private val beanList by lazy {
+        mutableListOf<OrderListBean>()
+    }
+
+    private val thirdBeanList by lazy {
+        mutableListOf<OrderThirdListBean>()
+    }
 
     private val mLifecycleRegistry = LifecycleRegistry(this)
     override fun onBind(intent: Intent?): IBinder? {
@@ -65,6 +78,7 @@ class LooperService : Service(), LifecycleOwner {
     override fun onStart(intent: Intent?, startId: Int) {
         super.onStart(intent, startId)
         mLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+        EventBus.getDefault().register(this)//注册，重复注册会导致崩溃
     }
 
 
@@ -80,6 +94,7 @@ class LooperService : Service(), LifecycleOwner {
         isLooper = false
         threadPool.shutdown()
         handler.removeCallbacksAndMessages(null)
+        EventBus.getDefault().unregister(this)//解绑
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -125,11 +140,17 @@ class LooperService : Service(), LifecycleOwner {
             while (isLooper) {
                 try {
                     if (!SpUtils.getParcelable<UserBean>(USER_BEAN)?.token.isNullOrEmpty()) {
-                        getdata()
+                        getGrabdata()
                         getLocation()
                         Thread.sleep(15000)
                         getRemind()
                         Thread.sleep(15000)
+                        getUnSendList()
+                        Thread.sleep(5000)
+                        getThirdUnSendList()
+                        Thread.sleep(5000)
+                        getThirdRemind()
+                        Thread.sleep(5000)
                     }
                 } catch (e: InterruptedException) {
                 }
@@ -141,7 +162,7 @@ class LooperService : Service(), LifecycleOwner {
     var isUpload = StateLiveData<Boolean>()
     var remindOrder = StateLiveData<Int>()
 
-    fun getdata() {
+    fun getGrabdata() {
         if (SpUtils.getBoolean(GRAB_ORDER_REMIND_SWITCH) == true) {
             GlobalScope.launch {
                 re.getGrabNum(grabNum)
@@ -258,6 +279,26 @@ class LooperService : Service(), LifecycleOwner {
                             this.postDelayed({ handleNavEnd() }, 5000)
                         }
                     }
+                } else if (msg.what == 3) { //超时提醒订单
+                    if (soundpool != null) {
+                        handleNavStart()
+                        soundpool!!.play(soundMap[3]!!, 1f, 1f, 1, 0, 1f)
+                        this.postDelayed({ handleNavEnd() }, 5000)
+                    }
+                } else if (msg.what == 4) { //三方订单提醒
+                    var status = SpUtils.getString(THIRD_ORDER_REMIND_SWITCH_TYPE) ?: ""
+                    if (REMIND_TYPE_ONE.equals(status)) { //系统提醒
+                        val uri =
+                            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                        val rt = RingtoneManager.getRingtone(MainApplication.getInstance(), uri)
+                        rt.play()
+                    } else if (REMIND_TYPE_TWO.equals(status)) { //人工语音
+                        if (soundpool != null) {
+                            handleNavStart()
+                            soundpool!!.play(soundMap[1]!!, 1f, 1f, 1, 0, 1f)
+                            this.postDelayed({ handleNavEnd() }, 5000)
+                        }
+                    }
                 }
             } catch (e: Exception) {
             }
@@ -282,6 +323,63 @@ class LooperService : Service(), LifecycleOwner {
     private fun handleNavEnd() {
         if (mAudioManager != null) {
             mAudioManager!!.abandonAudioFocus(mNavFocusListener)
+        }
+    }
+
+    private fun getUnSendList() {
+        if (SpUtils.getBoolean(ORDER_UNSEND_MINUTE_SWITCH) == true) {
+            var minute = SpUtils.getString(ORDER_UNSEND_MINUTE)
+            beanList.forEach {
+                if (DateUtils.longToMin(
+                        DateUtils.computingTimeDifference(
+                            it.bespokeTimeTo,
+                            DateUtils.getCurrentTime1()
+                        )
+                    ) < minute?.toInt()!!
+                ) {
+                    val message = Message.obtain()
+                    message.what = 3
+                    handler.sendMessageDelayed(message, 15000)
+                    return
+                }
+            }
+        }
+    }
+
+    private fun getThirdUnSendList() {
+        if (SpUtils.getBoolean(THIRD_ORDER_UNSEND_MINUTE_SWITCH) == true) {
+            var minute = SpUtils.getString(THIRD_ORDER_UNSEND_MINUTE)
+            thirdBeanList.forEach {
+                if (DateUtils.longToMin(
+                        DateUtils.computingTimeDifference(
+                            it.expectLatestSendTime,
+                            DateUtils.getCurrentTime1()
+                        )
+                    ) < minute?.toInt()!!
+                ) {
+                    val message = Message.obtain()
+                    message.what = 3
+                    handler.sendMessageDelayed(message, 15000)
+                    return
+                }
+            }
+        }
+    }
+
+    private fun getThirdRemind() {
+        if (SpUtils.getBoolean(THIRD_ORDER_REMIND_SWITCH) == true) {
+
+        }
+    }
+
+    //接收消息
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onMessageEvent(event: MessageEvent) {
+        when (event.type) {
+            MessageType.orderBean -> {
+            }
+            MessageType.thirdOrderBean -> {
+            }
         }
     }
 

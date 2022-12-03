@@ -128,6 +128,14 @@ interface NetApi {
     ): BaseResult<Boolean>
 
     /**
+     * 获取三方订单详情
+     */
+    @POST("app/api/optimus/finsh/order")
+    suspend fun getThirdDetail(
+        @Body route: RequestBody
+    ): BaseResult<ThirdDetailBean>
+
+    /**
      * 查询提醒的订单
      */
     @GET("app/api/remind/orders")

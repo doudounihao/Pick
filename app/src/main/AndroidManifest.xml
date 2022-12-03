@@ -46,6 +46,7 @@
         <activity android:name=".ui.user.MessageSetActivity" />
         <activity android:name=".ui.user.OrderRemindActivity" />
         <activity android:name=".ui.home.OrderDetailActivity" />
+        <activity android:name=".ui.home.ThirdDetailActivity" />
         <activity android:name=".ui.home.OrderSearchActivity" />
         <activity android:name=".ui.home.ThirdSearchActivity" />
         <activity android:name=".ui.home.OrderLoadSearchActivity" />

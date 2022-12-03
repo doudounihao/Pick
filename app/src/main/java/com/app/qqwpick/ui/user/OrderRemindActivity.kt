@@ -14,11 +14,14 @@ class OrderRemindActivity : BaseVMActivity<ActivityOrderRemindBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         type = intent.getStringExtra("type") ?: ""
         if (type.equals(NEW_ORDER_REMIND_SWITCH_TYPE)) {
-            mBinding.title.tvCenter.setText("新订单消息设置")
+            mBinding.title.tvCenter.setText("到家到店新订单消息设置")
             text = SpUtils.getString(NEW_ORDER_REMIND_SWITCH_TYPE) ?: ""
-        } else {
-            mBinding.title.tvCenter.setText("抢单消息设置")
+        } else if (type.equals(GRAB_ORDER_REMIND_SWITCH_TYPE)) {
+            mBinding.title.tvCenter.setText("到家到店抢单消息设置")
             text = SpUtils.getString(GRAB_ORDER_REMIND_SWITCH_TYPE) ?: ""
+        } else {
+            mBinding.title.tvCenter.setText("三方订单新订单消息设置")
+            text = SpUtils.getString(THIRD_ORDER_REMIND_SWITCH_TYPE) ?: ""
         }
 
         mBinding.title.tvLeft.setOnClickListener {
@@ -39,8 +42,10 @@ class OrderRemindActivity : BaseVMActivity<ActivityOrderRemindBinding>() {
             mBinding.cbSoundVibration.isChecked = false
             if (type.equals(NEW_ORDER_REMIND_SWITCH_TYPE)) {
                 SpUtils.put(NEW_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_ONE)
-            } else {
+            } else if (type.equals(GRAB_ORDER_REMIND_SWITCH_TYPE)) {
                 SpUtils.put(GRAB_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_ONE)
+            } else {
+                SpUtils.put(THIRD_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_ONE)
             }
         }
 
@@ -50,8 +55,10 @@ class OrderRemindActivity : BaseVMActivity<ActivityOrderRemindBinding>() {
             mBinding.cbSoundVibration.isChecked = false
             if (type.equals(NEW_ORDER_REMIND_SWITCH_TYPE)) {
                 SpUtils.put(NEW_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_TWO)
-            } else {
+            } else if (type.equals(GRAB_ORDER_REMIND_SWITCH_TYPE)) {
                 SpUtils.put(GRAB_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_TWO)
+            } else {
+                SpUtils.put(THIRD_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_TWO)
             }
         }
 
@@ -61,8 +68,10 @@ class OrderRemindActivity : BaseVMActivity<ActivityOrderRemindBinding>() {
             mBinding.cbSoundVibration.isChecked = true
             if (type.equals(NEW_ORDER_REMIND_SWITCH_TYPE)) {
                 SpUtils.put(NEW_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_THREE)
-            } else {
+            } else if (type.equals(GRAB_ORDER_REMIND_SWITCH_TYPE)) {
                 SpUtils.put(GRAB_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_THREE)
+            } else {
+                SpUtils.put(THIRD_ORDER_REMIND_SWITCH_TYPE, REMIND_TYPE_THREE)
             }
         }
 

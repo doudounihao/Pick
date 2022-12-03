@@ -5,6 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/f5"
         android:fitsSystemWindows="true">
 
         <include
@@ -110,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
-            android:background="@color/white"
+            android:background="@drawable/round_conner_white_bg_bottom_10"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_sound_people">
 

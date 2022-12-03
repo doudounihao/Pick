@@ -17,11 +17,11 @@ class OrderSendListAdapter(list: MutableList<OrderListBean>) :
         val binding = holder.dataBinding
         binding?.item = item
         val s: Array<String> = item.serialNum.split(" ").toTypedArray()
-        var s1 = s[1]
+        var s1 = s[0]
         s1 = s1.replace("#".toRegex(), "")
         binding?.tvNum?.setText(s1)
         val str = StringBuilder()
-        str.replace(0, str.length, "(").append(s[2]).append(")")
+        str.replace(0, str.length, "(").append(s[1]).append(")")
         binding?.txtItemOrderListFragmentSerialDate?.setText(str.toString())
         val timeStr: Int = DateUtils.calculateTime(item.bespokeTimeTo)
         if (timeStr < 120) {

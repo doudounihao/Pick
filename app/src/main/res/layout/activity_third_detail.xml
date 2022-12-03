@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.app.qqwpick.data.home.ThirdDetailBean" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/f5"
+        android:descendantFocusability="blocksDescendants"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        android:focusableInTouchMode="true"
+        android:scrollbars="none">
+
+        <include
+            android:id="@+id/title"
+            layout="@layout/view_model_title" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_order_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/round_conner_white_bg_10"
+                    android:padding="@dimen/dp_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tv_order_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="订单信息"
+                        android:textColor="@color/black22"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_order_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@{@string/order_no+item.orderNo}"
+                        android:textColor="@color/colorGray6"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/tv_order_info"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_order_info"
+                        tools:text="订单编号：12345647" />
+
+                    <TextView
+                        android:id="@+id/tv_order_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@{@string/order_time+item.orderCreateTime}"
+                        android:textColor="@color/colorGray6"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/tv_order_info"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_order_no"
+                        tools:text="订单时间：2021" />
+
+                    <TextView
+                        android:id="@+id/tv_order_send_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@{@string/order_send_time+item.sendTime}"
+                        android:textColor="@color/colorGray6"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/tv_order_info"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_order_time"
+                        tools:text="配送时间：2021" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_person_message"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/round_conner_white_bg_10"
+                    android:padding="@dimen/dp_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_order_message">
+
+                    <TextView
+                        android:id="@+id/tv_send_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="配送信息"
+                        android:textColor="@color/black22"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_person_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@{@string/order_person_type+item.receiverName}"
+                        android:textColor="@color/colorGray6"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/tv_send_info"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_send_info"
+                        tools:text="买家身份：12345647" />
+
+                    <TextView
+                        android:id="@+id/tv_person_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@{@string/order_person_phone+item.receiverPrivacyPhone}"
+                        android:textColor="@color/colorGray6"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/tv_send_info"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_person_name"
+                        tools:text="联系方式：2021" />
+
+                    <TextView
+                        android:id="@+id/tv_person_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@{@string/order_address+item.address}"
+                        android:textColor="@color/colorGray6"
+                        android:textSize="14sp"
+                        app:layout_constraintLeft_toLeftOf="@+id/tv_send_info"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_person_phone"
+                        tools:text="配送地址：021" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/round_conner_white_bg_10"
+                    android:padding="@dimen/dp_10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_person_message">
+
+                    <TextView
+                        android:id="@+id/tv_goods_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="商品信息"
+                        android:textColor="@color/black22"
+                        android:textSize="@dimen/sp_15"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_goods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_goods_info" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

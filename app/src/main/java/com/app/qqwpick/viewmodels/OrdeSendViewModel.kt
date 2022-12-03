@@ -8,6 +8,7 @@ import com.app.qqwpick.data.PickRepository
 import com.app.qqwpick.data.home.OrderListBean
 import com.app.qqwpick.data.home.OrderLoadListBean
 import com.app.qqwpick.data.home.OrderThirdListBean
+import com.app.qqwpick.data.home.ThirdDetailBean
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -105,6 +106,14 @@ class OrdeSendViewModel @Inject constructor(val pickRepo: PickRepository) :
     fun finishThirdDelivery(orderNo: String) {
         viewModelScope.launch {
             pickRepo.finishThirdDelivery(orderNo, finishThirdDelivery)
+        }
+    }
+
+    var thirdDetailBean = StateLiveData<ThirdDetailBean>()
+
+    fun getThirdDetail(orderNo: String) {
+        viewModelScope.launch {
+            pickRepo.getThirdDetail(orderNo, thirdDetailBean)
         }
     }
 }
