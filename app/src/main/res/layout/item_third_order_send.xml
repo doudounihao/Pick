@@ -78,7 +78,7 @@
             app:layout_constraintLeft_toRightOf="@+id/txt_item_order_list_fragment_serialDate"
             app:layout_constraintTop_toTopOf="@+id/txt_item_order_list_fragment_serialNum" />
 
-        <com.app.qqwpick.views.AppletDeliveryStatusLayout
+        <com.app.qqwpick.views.DeliveryStatusLayout
             android:id="@+id/delivery_item_order_list_fragment_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

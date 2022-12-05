@@ -9,10 +9,7 @@ import com.app.qqwpick.data.home.*
 import com.app.qqwpick.data.user.StoreBean
 import com.app.qqwpick.data.user.UserBean
 import com.app.qqwpick.net.NetApi
-import com.app.qqwpick.util.STORE_ID
-import com.app.qqwpick.util.SpUtils
-import com.app.qqwpick.util.USER_BEAN
-import com.app.qqwpick.util.USER_JOB_NUMBER
+import com.app.qqwpick.util.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -244,12 +241,18 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
     }
 
     suspend fun getThirdDetail(orderNo: String, result: StateLiveData<ThirdDetailBean>) {
+        executeRequest({ api.getThirdDetail(orderNo) }, result)
+    }
+
+    suspend fun thirdOrderRemind(sendSTime: String, sendETime: String, result: StateLiveData<Any>) {
         val parm = JSONObject()
-        parm.put("orderNo", orderNo)
+        parm.put("storeNo", SpUtils.getString(STORE_NO))
+        parm.put("sendSTime", sendSTime)
+        parm.put("sendETime", sendETime)
         val requestBody = RequestBody.create(
             "application/json".toMediaTypeOrNull(),
             parm.toString()
         )
-        executeRequest({ api.getThirdDetail(requestBody) }, result)
+        executeRequest({ api.thirdOrderRemind(requestBody) }, result)
     }
 }

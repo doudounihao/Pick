@@ -6,16 +6,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.qqwpick.R
 import com.app.qqwpick.adapter.ThirdGoodsAdapter
 import com.app.qqwpick.base.BaseVMActivity
+import com.app.qqwpick.data.home.OrderListBean
 import com.app.qqwpick.data.home.ThirdGoodsBean
 import com.app.qqwpick.databinding.ActivityThirdDetailBinding
 import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.viewmodels.OrdeSendViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ThirdDetailActivity : BaseVMActivity<ActivityThirdDetailBinding>() {
 
     var orderNo: String = ""
-    lateinit var beanList: MutableList<ThirdGoodsBean>
     private val viewModel: OrdeSendViewModel by viewModels()
+
+    private val beanList by lazy {
+        mutableListOf<ThirdGoodsBean>()
+    }
 
     private val mAdapter by lazy {
         ThirdGoodsAdapter(beanList)
@@ -51,7 +57,7 @@ class ThirdDetailActivity : BaseVMActivity<ActivityThirdDetailBinding>() {
                 DataStatus.STATE_SUCCESS -> {
                     dismissLoading()
                     mBinding.item = it.data
-                    beanList = it.data?.orderPayDetails as MutableList<ThirdGoodsBean>
+                    beanList.addAll(it.data?.orderDetails as MutableList<ThirdGoodsBean>)
                     mAdapter.notifyDataSetChanged()
                 }
             }

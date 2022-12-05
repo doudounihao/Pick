@@ -45,17 +45,15 @@ class LooperService : Service(), LifecycleOwner {
 
     private var startTime: String = ""
     private var endTime: String = ""
+    private var startThirdTime: String = ""
+    private var endThirdTime: String = ""
     private var soundMap = HashMap<Int, Int>()
     private var mAudioManager: AudioManager? = null
     private val threadPool = Executors.newFixedThreadPool(1)
 
-    private val beanList by lazy {
-        mutableListOf<OrderListBean>()
-    }
+    private var beanList = mutableListOf<OrderListBean>()
 
-    private val thirdBeanList by lazy {
-        mutableListOf<OrderThirdListBean>()
-    }
+    private var thirdBeanList = mutableListOf<OrderThirdListBean>()
 
     private val mLifecycleRegistry = LifecycleRegistry(this)
     override fun onBind(intent: Intent?): IBinder? {
@@ -161,6 +159,7 @@ class LooperService : Service(), LifecycleOwner {
     var grabNum = StateLiveData<Int>()
     var isUpload = StateLiveData<Boolean>()
     var remindOrder = StateLiveData<Int>()
+    var thirdNum = StateLiveData<Any>()
 
     fun getGrabdata() {
         if (SpUtils.getBoolean(GRAB_ORDER_REMIND_SWITCH) == true) {
@@ -190,7 +189,7 @@ class LooperService : Service(), LifecycleOwner {
 
     private fun getRemind() {
         if (SpUtils.getBoolean(NEW_ORDER_REMIND_SWITCH) == true) {
-            startTime = DateUtils.getCurrentTime1()
+            endTime = DateUtils.getCurrentTime1()
             GlobalScope.launch {
                 re.getRemindOrderList(startTime, endTime, "3", remindOrder)
             }
@@ -220,7 +219,7 @@ class LooperService : Service(), LifecycleOwner {
         remindOrder.observe(this, {
             when (it.dataStatus) {
                 DataStatus.STATE_ERROR -> {
-                    endTime = startTime
+                    startTime = endTime
                 }
                 DataStatus.STATE_SUCCESS -> {
                     if (it.data!! > 0) {
@@ -228,7 +227,23 @@ class LooperService : Service(), LifecycleOwner {
                         message.what = 1
                         handler.sendMessageDelayed(message, 15000)
                     }
-                    endTime = startTime
+                    startTime = endTime
+                }
+            }
+        })
+
+        thirdNum.observe(this, {
+            when (it.dataStatus) {
+                DataStatus.STATE_ERROR -> {
+                    startThirdTime = endThirdTime
+                }
+                DataStatus.STATE_SUCCESS -> {
+//                    if (it.data!! > 0) {
+//                        val message = Message.obtain()
+//                        message.what = 1
+//                        handler.sendMessageDelayed(message, 15000)
+//                    }
+                    startThirdTime = endThirdTime
                 }
             }
         })
@@ -368,7 +383,10 @@ class LooperService : Service(), LifecycleOwner {
 
     private fun getThirdRemind() {
         if (SpUtils.getBoolean(THIRD_ORDER_REMIND_SWITCH) == true) {
-
+            endThirdTime = DateUtils.getCurrentTime1()
+            GlobalScope.launch {
+                re.thirdOrderRemind(startThirdTime, endThirdTime, thirdNum)
+            }
         }
     }
 
@@ -377,8 +395,10 @@ class LooperService : Service(), LifecycleOwner {
     fun onMessageEvent(event: MessageEvent) {
         when (event.type) {
             MessageType.orderBean -> {
+                beanList = event.getBeanListData()
             }
             MessageType.thirdOrderBean -> {
+                thirdBeanList = event.getBeanThirdListData()
             }
         }
     }

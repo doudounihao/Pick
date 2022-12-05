@@ -1,5 +1,6 @@
 package com.app.qqwpick.adapter
 
+import android.view.View
 import com.app.qqwpick.R
 import com.app.qqwpick.data.home.OrderThirdListBean
 import com.app.qqwpick.databinding.ItemThirdOrderSendBinding
@@ -30,6 +31,17 @@ class ThirdOrderSendListAdapter(list: MutableList<OrderThirdListBean>) :
             binding?.ivOrderStatus?.setImageResource(R.mipmap.icon_number_elm_right_list)
         } else if (item.sourceChannel.contains("企业购")) {
             binding?.ivOrderStatus?.setImageResource(R.mipmap.icon_number_qyg_list)
+        }
+        val timeStr: Int = DateUtils.calculateTime(item.expectEarliestSendTime)
+        if (timeStr < 120) {
+            binding?.deliveryItemOrderListFragmentStatus?.setVisibility(View.VISIBLE)
+            binding?.deliveryItemOrderListFragmentStatus?.setData(
+                item.expectEarliestSendTime,
+                null,
+                DateUtils.getCurrentTime1()
+            )
+        } else {
+            binding?.deliveryItemOrderListFragmentStatus?.setVisibility(View.GONE)
         }
     }
 }

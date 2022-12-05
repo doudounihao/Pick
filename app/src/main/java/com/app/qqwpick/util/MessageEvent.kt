@@ -2,6 +2,9 @@ package com.app.qqwpick.util
 
 import android.os.Bundle
 import android.os.Parcelable
+import com.app.qqwpick.data.home.OrderListBean
+import com.app.qqwpick.data.home.OrderThirdListBean
+import com.app.qqwpick.data.home.ThirdDetailBean
 import java.io.Serializable
 
 private const val KEY_INT = "key_int"
@@ -14,6 +17,18 @@ private const val KEY_LIST = "key_list"
 data class MessageEvent(var type: MessageType) {
 
     var bundle = Bundle()
+    var beanList = mutableListOf<OrderListBean>()
+    var thirdBeanList = mutableListOf<OrderThirdListBean>()
+
+    fun put(list: MutableList<OrderListBean>): MessageEvent {
+        beanList = list
+        return this
+    }
+
+    fun putThird(listThird: MutableList<OrderThirdListBean>): MessageEvent {
+        thirdBeanList = listThird
+        return this
+    }
 
     fun put(value: Int): MessageEvent {
         bundle.putInt(KEY_INT, value)
@@ -66,6 +81,14 @@ data class MessageEvent(var type: MessageType) {
     }
 
     //===============================================================
+
+    fun getBeanListData(): MutableList<OrderListBean> {
+        return beanList
+    }
+
+    fun getBeanThirdListData(): MutableList<OrderThirdListBean> {
+        return thirdBeanList
+    }
 
     fun getInt(): Int {
         return bundle.getInt(KEY_INT)

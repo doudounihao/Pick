@@ -130,9 +130,9 @@ interface NetApi {
     /**
      * 获取三方订单详情
      */
-    @POST("app/api/optimus/finsh/order")
+    @GET("app/api/optimus/get-order_detail/{orderNo}")
     suspend fun getThirdDetail(
-        @Body route: RequestBody
+        @Path("orderNo") orderNo: String
     ): BaseResult<ThirdDetailBean>
 
     /**
@@ -179,7 +179,6 @@ interface NetApi {
         @Query("outboundStatus") outboundStatus: String,
     ): BaseResult<BasePagingResult<List<OrderListBean>>>
 
-
     /**
      * 查询三方订单
      */
@@ -192,4 +191,12 @@ interface NetApi {
         @Query("orderNo") orderNo: String,//路路通单号
         @Query("channelOrderNo") channelOrderNo: String//中台单号
     ): BaseResult<BasePagingResult<List<OrderThirdListBean>>>
+
+    /**
+     * 三方配送订单查询
+     */
+    @POST("app/api/optimus/store-self-delivery/count")
+    suspend fun thirdOrderRemind(
+        @Body route: RequestBody
+    ): BaseResult<Any>
 }

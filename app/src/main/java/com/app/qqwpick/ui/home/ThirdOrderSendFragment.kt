@@ -18,9 +18,7 @@ import com.app.qqwpick.base.BaseVMFragment
 import com.app.qqwpick.data.home.OrderThirdListBean
 import com.app.qqwpick.databinding.FragmentOrderSendBinding
 import com.app.qqwpick.net.DataStatus
-import com.app.qqwpick.util.ActivityUtil
-import com.app.qqwpick.util.ORDER_FIRST_INDEX
-import com.app.qqwpick.util.ORDER_PAGE_SIZE
+import com.app.qqwpick.util.*
 import com.app.qqwpick.viewmodels.OrdeSendViewModel
 import com.hjq.toast.ToastUtils
 import com.kongzue.dialogx.dialogs.BottomMenu
@@ -29,6 +27,7 @@ import com.kongzue.dialogx.interfaces.DialogLifecycleCallback
 import com.kongzue.dialogx.interfaces.OnBindView
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
 
 @AndroidEntryPoint
 class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
@@ -128,6 +127,8 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     } else {
                         mAdapter.loadMoreModule.loadMoreComplete()
                     }
+                    EventBus.getDefault()
+                        .postSticky(MessageEvent(MessageType.thirdOrderBean).putThird(beanList))
                 }
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()

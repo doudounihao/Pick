@@ -12,7 +12,7 @@ data class ThirdDetailBean(
     val receiverName: String,
     val receiverPrivacyPhone: String,
     val address: String,
-    val orderPayDetails: List<ThirdGoodsBean>
+    val orderDetails: List<ThirdGoodsBean>
 ) : Serializable {
 
     @JvmName("getSendTime")

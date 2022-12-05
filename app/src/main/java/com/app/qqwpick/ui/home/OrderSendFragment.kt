@@ -125,8 +125,8 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     } else {
                         mAdapter.loadMoreModule.loadMoreComplete()
                     }
-//                    EventBus.getDefault()
-//                        .postSticky(MessageEvent(MessageType.orderBean).put())
+                    EventBus.getDefault()
+                        .postSticky(MessageEvent(MessageType.orderBean).put(beanList))
                 }
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()
