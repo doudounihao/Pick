@@ -130,6 +130,7 @@ class OrderSearchActivity : BaseVMActivity<ActivityOrderSearchBinding>() {
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         if (it.data?.list.isNullOrEmpty()) {
                             //如果网络错误了
                             mAdapter.setEmptyView(
@@ -153,6 +154,7 @@ class OrderSearchActivity : BaseVMActivity<ActivityOrderSearchBinding>() {
                     finishRefresh()
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(

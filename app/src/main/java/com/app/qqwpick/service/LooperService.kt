@@ -99,6 +99,7 @@ class LooperService : Service(), LifecycleOwner {
         if (intent != null) {
             isLooper = true
             initSoundPool()
+            startThirdTime = DateUtils.getTodayZeroTime()
             startLooper()
             mAudioManager = getSystemService(
                 AUDIO_SERVICE
@@ -159,7 +160,7 @@ class LooperService : Service(), LifecycleOwner {
     var grabNum = StateLiveData<Int>()
     var isUpload = StateLiveData<Boolean>()
     var remindOrder = StateLiveData<Int>()
-    var thirdNum = StateLiveData<Any>()
+    var thirdNum = StateLiveData<Int>()
 
     fun getGrabdata() {
         if (SpUtils.getBoolean(GRAB_ORDER_REMIND_SWITCH) == true) {
@@ -205,7 +206,7 @@ class LooperService : Service(), LifecycleOwner {
                     if (it.data!! > 0) {
                         val message = Message.obtain()
                         message.what = 2
-                        handler.sendMessageDelayed(message, 15000)
+                        handler.sendMessageDelayed(message, 1000)
                         EventBus.getDefault()
                             .postSticky(MessageEvent(MessageType.ShowGrab).put(it.data!!))
                     } else {
@@ -225,7 +226,9 @@ class LooperService : Service(), LifecycleOwner {
                     if (it.data!! > 0) {
                         val message = Message.obtain()
                         message.what = 1
-                        handler.sendMessageDelayed(message, 15000)
+                        handler.sendMessageDelayed(message, 1000)
+                        EventBus.getDefault()
+                            .postSticky(MessageEvent(MessageType.orderListRefresh).put(it.data!!))
                     }
                     startTime = endTime
                 }
@@ -238,11 +241,13 @@ class LooperService : Service(), LifecycleOwner {
                     startThirdTime = endThirdTime
                 }
                 DataStatus.STATE_SUCCESS -> {
-//                    if (it.data!! > 0) {
-//                        val message = Message.obtain()
-//                        message.what = 1
-//                        handler.sendMessageDelayed(message, 15000)
-//                    }
+                    if (it.data!! > 0) {
+                        val message = Message.obtain()
+                        message.what = 4
+                        handler.sendMessageDelayed(message, 1000)
+                        EventBus.getDefault()
+                            .postSticky(MessageEvent(MessageType.thirdListRefresh).put(it.data!!))
+                    }
                     startThirdTime = endThirdTime
                 }
             }
@@ -266,7 +271,7 @@ class LooperService : Service(), LifecycleOwner {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             try {
-                if (msg.what == 1) { //订单提醒
+                if (msg.what == 1 && SpUtils.getBoolean(NEW_ORDER_REMIND_SWITCH) == true) { //订单提醒
                     var status = SpUtils.getString(NEW_ORDER_REMIND_SWITCH_TYPE) ?: ""
                     if (REMIND_TYPE_ONE.equals(status)) { //系统提醒
                         val uri =
@@ -280,7 +285,7 @@ class LooperService : Service(), LifecycleOwner {
                             this.postDelayed({ handleNavEnd() }, 5000)
                         }
                     }
-                } else if (msg.what == 2) { //抢单订单
+                } else if (msg.what == 2 && SpUtils.getBoolean(GRAB_ORDER_REMIND_SWITCH) == true) { //抢单订单
                     var status = SpUtils.getString(GRAB_ORDER_REMIND_SWITCH_TYPE) ?: ""
                     if (REMIND_TYPE_ONE.equals(status)) { //系统提醒
                         val uri =
@@ -294,13 +299,13 @@ class LooperService : Service(), LifecycleOwner {
                             this.postDelayed({ handleNavEnd() }, 5000)
                         }
                     }
-                } else if (msg.what == 3) { //超时提醒订单
+                } else if (msg.what == 3 && SpUtils.getBoolean(ORDER_UNSEND_MINUTE_SWITCH) == true) { //超时提醒订单
                     if (soundpool != null) {
                         handleNavStart()
                         soundpool!!.play(soundMap[3]!!, 1f, 1f, 1, 0, 1f)
                         this.postDelayed({ handleNavEnd() }, 5000)
                     }
-                } else if (msg.what == 4) { //三方订单提醒
+                } else if (msg.what == 4 && SpUtils.getBoolean(THIRD_ORDER_REMIND_SWITCH) == true) { //三方订单提醒
                     var status = SpUtils.getString(THIRD_ORDER_REMIND_SWITCH_TYPE) ?: ""
                     if (REMIND_TYPE_ONE.equals(status)) { //系统提醒
                         val uri =
@@ -313,6 +318,12 @@ class LooperService : Service(), LifecycleOwner {
                             soundpool!!.play(soundMap[1]!!, 1f, 1f, 1, 0, 1f)
                             this.postDelayed({ handleNavEnd() }, 5000)
                         }
+                    }
+                } else if (msg.what == 5 && SpUtils.getBoolean(THIRD_ORDER_UNSEND_MINUTE_SWITCH) == true) { //三方超时提醒订单
+                    if (soundpool != null) {
+                        handleNavStart()
+                        soundpool!!.play(soundMap[3]!!, 1f, 1f, 1, 0, 1f)
+                        this.postDelayed({ handleNavEnd() }, 5000)
                     }
                 }
             } catch (e: Exception) {
@@ -354,7 +365,7 @@ class LooperService : Service(), LifecycleOwner {
                 ) {
                     val message = Message.obtain()
                     message.what = 3
-                    handler.sendMessageDelayed(message, 15000)
+                    handler.sendMessageDelayed(message, 1000)
                     return
                 }
             }
@@ -373,8 +384,8 @@ class LooperService : Service(), LifecycleOwner {
                     ) < minute?.toInt()!!
                 ) {
                     val message = Message.obtain()
-                    message.what = 3
-                    handler.sendMessageDelayed(message, 15000)
+                    message.what = 5
+                    handler.sendMessageDelayed(message, 1000)
                     return
                 }
             }

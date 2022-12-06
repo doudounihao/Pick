@@ -7,9 +7,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.app.qqwpick.R
 import com.app.qqwpick.base.BaseVMFragment
 import com.app.qqwpick.databinding.FragmentHomeBinding
+import com.app.qqwpick.util.MessageEvent
+import com.app.qqwpick.util.MessageType
 import com.app.qqwpick.util.STORE_NAME
 import com.app.qqwpick.util.SpUtils
 import com.google.android.material.tabs.TabLayoutMediator
+import org.greenrobot.eventbus.EventBus
 
 class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
 
@@ -26,6 +29,16 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
         list.add(OrderFragment())
         list.add(ThirdFragment())
         list
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            EventBus.getDefault()
+                .postSticky(MessageEvent(MessageType.orderListRefresh).put("0"))
+            EventBus.getDefault()
+                .postSticky(MessageEvent(MessageType.thirdListRefresh).put("0"))
+        }
     }
 
     override fun initView(view: View) {
@@ -45,7 +58,7 @@ class HomeFragment : BaseVMFragment<FragmentHomeBinding>() {
         TabLayoutMediator(mBinding.tabLayout, mBinding.viewPager2) { tab, position ->
             tab.text = mTitles[position]
         }.attach()
-        mBinding.viewPager2.offscreenPageLimit = 2
+        mBinding.viewPager2.offscreenPageLimit = 1
 
         mBinding.tvSearch.setOnClickListener {
             when (type) {

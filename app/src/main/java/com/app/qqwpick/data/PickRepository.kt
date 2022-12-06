@@ -244,11 +244,11 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
         executeRequest({ api.getThirdDetail(orderNo) }, result)
     }
 
-    suspend fun thirdOrderRemind(sendSTime: String, sendETime: String, result: StateLiveData<Any>) {
+    suspend fun thirdOrderRemind(sendSTime: String, sendETime: String, result: StateLiveData<Int>) {
         val parm = JSONObject()
         parm.put("storeNo", SpUtils.getString(STORE_NO))
-        parm.put("sendSTime", sendSTime)
-        parm.put("sendETime", sendETime)
+        parm.put("startTime", sendSTime)
+        parm.put("endTime", sendETime)
         val requestBody = RequestBody.create(
             "application/json".toMediaTypeOrNull(),
             parm.toString()

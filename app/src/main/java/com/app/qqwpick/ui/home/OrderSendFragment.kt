@@ -22,8 +22,9 @@ import com.kongzue.dialogx.interfaces.DialogLifecycleCallback
 import com.kongzue.dialogx.interfaces.OnBindView
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import extension.visibleOrGone
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 @AndroidEntryPoint
@@ -43,6 +44,14 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
     override fun onResume() {
         super.onResume()
         (parentFragment as OrderFragment).setType(1)
+        getData()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            getData()
+        }
     }
 
     override fun initView(view: View) {
@@ -83,11 +92,6 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
         }
     }
 
-    override fun initData() {
-        super.initData()
-        getData()
-    }
-
     private fun getData() {
         mAdapter.loadMoreModule.isEnableLoadMore = false
         viewModel.getBeanList(mCurrentPosition, ORDER_PAGE_SIZE, orderNo, SEND_STATUS)
@@ -107,6 +111,7 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         if (it.data?.list.isNullOrEmpty()) {
                             //如果网络错误了
                             mAdapter.setEmptyView(
@@ -114,6 +119,8 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                                     mBinding.common.recyclerData
                                 )
                             )
+                            EventBus.getDefault()
+                                .postSticky(MessageEvent(MessageType.orderBean).put(beanList))
                             return@observe
                         }
                     }
@@ -133,6 +140,7 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         //必须要先把数组设置为空
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(
@@ -140,6 +148,8 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                                 it.exception?.msg
                             )
                         )
+                        EventBus.getDefault()
+                            .postSticky(MessageEvent(MessageType.orderBean).put(beanList))
                     }
                 }
             }
@@ -251,5 +261,25 @@ class OrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_order_send
+    }
+
+    //接收消息
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onMessageEvent(event: MessageEvent) {
+        when (event.type) {
+            MessageType.orderListRefresh -> {
+                getData()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)//注册，重复注册会导致崩溃
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)//解绑
     }
 }

@@ -1,5 +1,6 @@
 package com.app.qqwpick.ui.home
 
+import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.viewModels
@@ -18,6 +19,9 @@ import com.kongzue.dialogx.dialogs.MessageDialog
 import com.kongzue.dialogx.interfaces.OnBindView
 import dagger.hilt.android.AndroidEntryPoint
 import extension.visibleOrGone
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 @AndroidEntryPoint
@@ -64,28 +68,42 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
         getData()
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            getData()
+        }
+    }
+
     fun getData() {
         mAdapter.loadMoreModule.isEnableLoadMore = false
         viewModel.getGrabList(mCurrentPosition, ORDER_PAGE_SIZE)
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)//注册，重复注册会导致崩溃
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)//解绑
+    }
+
+    //接收消息
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onMessageEvent(event: MessageEvent) {
+        when (event.type) {
+            MessageType.ShowGrab -> {
+                if (event.getInt() > 0) {
+                    initData()
+                }
+            }
+        }
+    }
+
     override fun startObserver() {
         super.startObserver()
-
-//        viewModel.grabNum.observe(this, {
-//            when (it.dataStatus) {
-//                DataStatus.STATE_ERROR -> {
-//                    toast(it.exception!!.msg)
-//                }
-//                DataStatus.STATE_SUCCESS -> {
-//                    mBinding.tvNum.text = it.data.toString()
-//                    if (it.data!! > 0) {
-//                        getData()
-//                    }
-//                }
-//            }
-//        })
-
         viewModel.grabBeanList.observe(this, {
             when (it.dataStatus) {
                 DataStatus.STATE_LOADING -> {
@@ -98,6 +116,7 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         if (it.data?.list.isNullOrEmpty()) {
                             //如果网络错误了
                             mAdapter.setEmptyView(
@@ -106,6 +125,8 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                                 )
                             )
                             mBinding.tvNum.text = "0"
+                            EventBus.getDefault()
+                                .postSticky(MessageEvent(MessageType.ShowGrab).put(0))
                             return@observe
                         }
                     }
@@ -118,12 +139,17 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
                         mAdapter.loadMoreModule.loadMoreComplete()
                     }
                     mBinding.tvNum.text = beanList.size.toString()
+                    EventBus.getDefault()
+                        .postSticky(MessageEvent(MessageType.ShowGrab).put(beanList.size))
                 }
                 DataStatus.STATE_ERROR -> {
                     finishRefresh()
                     mBinding.tvNum.text = "0"
+                    EventBus.getDefault()
+                        .postSticky(MessageEvent(MessageType.ShowGrab).put(0))
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(

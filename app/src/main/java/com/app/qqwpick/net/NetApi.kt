@@ -198,5 +198,5 @@ interface NetApi {
     @POST("app/api/optimus/store-self-delivery/count")
     suspend fun thirdOrderRemind(
         @Body route: RequestBody
-    ): BaseResult<Any>
+    ): BaseResult<Int>
 }

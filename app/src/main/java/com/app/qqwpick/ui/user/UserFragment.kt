@@ -27,13 +27,13 @@ class UserFragment : BaseVMFragment<FragmentUserBinding>() {
         mBinding.toggleMap.isChecked =
             SpUtils.getBoolean(MAP_OPEN) ?: false
 
-        mBinding.tvTodayTip.setOnClickListener {
+        mBinding.tvTodaySend.setOnClickListener {
             var intent = Intent(requireContext(), FinishOrderActivity::class.java)
             intent.putExtra("type", "today")
             startActivity(intent)
         }
 
-        mBinding.tvMonthTip.setOnClickListener {
+        mBinding.tvMonthSend.setOnClickListener {
             var intent = Intent(requireContext(), FinishOrderActivity::class.java)
             intent.putExtra("month", "month")
             startActivity(intent)

@@ -135,5 +135,7 @@ data class MessageEvent(var type: MessageType) {
 enum class MessageType {
     ShowGrab,
     orderBean,
-    thirdOrderBean
+    thirdOrderBean,
+    orderListRefresh,
+    thirdListRefresh
 }

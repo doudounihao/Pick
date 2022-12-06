@@ -121,8 +121,7 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding>(), CodeInputView.OnTe
             }
             DataStatus.STATE_SUCCESS -> {
                 dismissLoading()
-                mBinding.etCode.setText(it.data)
-                mBinding.tvLogin.isSelected = true
+                ToastUtils.show("发送成功" + it.data)
             }
         }
     }

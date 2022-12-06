@@ -28,6 +28,8 @@ import com.kongzue.dialogx.interfaces.OnBindView
 import com.kongzue.dialogx.interfaces.OnMenuItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @AndroidEntryPoint
 class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
@@ -45,6 +47,14 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
     override fun onResume() {
         super.onResume()
         (parentFragment as ThirdFragment).setType(3)
+        getData()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            getData()
+        }
     }
 
     override fun initView(view: View) {
@@ -85,11 +95,6 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
         }
     }
 
-    override fun initData() {
-        super.initData()
-        getData()
-    }
-
     private fun getData() {
         mAdapter.loadMoreModule.isEnableLoadMore = false
         viewModel.getThirdBeanList(mCurrentPosition, ORDER_PAGE_SIZE, "", "")
@@ -109,6 +114,7 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         if (it.data?.list.isNullOrEmpty()) {
                             //如果网络错误了
                             mAdapter.setEmptyView(
@@ -116,6 +122,12 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                                     mBinding.common.recyclerData
                                 )
                             )
+                            EventBus.getDefault()
+                                .postSticky(
+                                    MessageEvent(MessageType.thirdOrderBean).putThird(
+                                        beanList
+                                    )
+                                )
                             return@observe
                         }
                     }
@@ -134,6 +146,7 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                     finishRefresh()
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(
@@ -141,6 +154,8 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
                                 it.exception?.msg
                             )
                         )
+                        EventBus.getDefault()
+                            .postSticky(MessageEvent(MessageType.thirdOrderBean).putThird(beanList))
                     }
                 }
             }
@@ -269,5 +284,25 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_order_send
+    }
+
+    //接收消息
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    fun onMessageEvent(event: MessageEvent) {
+        when (event.type) {
+            MessageType.thirdListRefresh -> {
+                getData()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)//注册，重复注册会导致崩溃
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)//解绑
     }
 }

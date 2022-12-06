@@ -1,6 +1,7 @@
 package com.app.qqwpick.ui.home
 
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -11,12 +12,12 @@ import com.app.qqwpick.base.BaseVMFragment
 import com.app.qqwpick.data.home.OrderLoadListBean
 import com.app.qqwpick.databinding.FragmentOrderLoadBinding
 import com.app.qqwpick.net.DataStatus
-import com.app.qqwpick.util.ActivityUtil
-import com.app.qqwpick.util.ORDER_FIRST_INDEX
-import com.app.qqwpick.util.ORDER_PAGE_SIZE
+import com.app.qqwpick.util.*
 import com.app.qqwpick.viewmodels.OrdeSendViewModel
 import com.hjq.toast.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 @AndroidEntryPoint
 class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
@@ -35,6 +36,7 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
     override fun onResume() {
         super.onResume()
         (parentFragment as OrderFragment).setType(2)
+        getData()
     }
 
     override fun initView(view: View) {
@@ -73,10 +75,6 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
         }
     }
 
-    override fun initData() {
-        super.initData()
-        getData()
-    }
 
     private fun getData() {
         mAdapter.loadMoreModule.isEnableLoadMore = false
@@ -97,6 +95,7 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
                     mAdapter.loadMoreModule.isEnableLoadMore = true
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         if (it.data?.list.isNullOrEmpty()) {
                             //如果网络错误了
                             mAdapter.setEmptyView(
@@ -120,6 +119,7 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
                     finishRefresh()
                     if (mCurrentPosition == ORDER_FIRST_INDEX) {
                         beanList.clear()
+                        mAdapter.notifyDataSetChanged()
                         //如果网络错误了
                         mAdapter.setEmptyView(
                             getMsgErrorView(
@@ -146,4 +146,5 @@ class OrderLoadFragment : BaseVMFragment<FragmentOrderLoadBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.fragment_order_load
     }
+
 }

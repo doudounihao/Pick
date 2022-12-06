@@ -44,7 +44,7 @@ class OrderFragment : BaseVMFragment<FragmentOrderBinding>() {
                 tabText.text = mTitles[position]
             }
         }.attach()
-        mBinding.viewPager2.offscreenPageLimit = 2
+        mBinding.viewPager2.offscreenPageLimit = 1
     }
 
     fun setType(type: Int) {
