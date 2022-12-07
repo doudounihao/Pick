@@ -94,9 +94,9 @@ class GrabFragment : BaseVMFragment<FragmentGrabBinding>() {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     fun onMessageEvent(event: MessageEvent) {
         when (event.type) {
-            MessageType.ShowGrab -> {
-                if (event.getInt() > 0) {
-                    initData()
+            MessageType.grabRefresh -> {
+                if (event.getInt() > 0 || event.getInt() == 0 && beanList.size > 0) {
+                    getData()
                 }
             }
         }

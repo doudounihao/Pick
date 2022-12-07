@@ -209,9 +209,13 @@ class LooperService : Service(), LifecycleOwner {
                         handler.sendMessageDelayed(message, 1000)
                         EventBus.getDefault()
                             .postSticky(MessageEvent(MessageType.ShowGrab).put(it.data!!))
+                        EventBus.getDefault()
+                            .postSticky(MessageEvent(MessageType.grabRefresh).put(it.data!!))
                     } else {
                         EventBus.getDefault()
                             .postSticky(MessageEvent(MessageType.ShowGrab).put(0))
+                        EventBus.getDefault()
+                            .postSticky(MessageEvent(MessageType.grabRefresh).put(0))
                     }
                 }
             }
