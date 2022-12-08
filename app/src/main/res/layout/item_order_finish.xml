@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_marginRight="@dimen/dp_10"
-            android:text="@{item.orderCreateTime}"
+            android:text="@{item.getSendTime}"
             android:textColor="@color/black22"
             android:textSize="16sp"
             app:layout_constraintRight_toRightOf="parent"

@@ -43,8 +43,6 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
     var tvSelectSearchType: TextView? = null
     var tvSelectSearchTypeBg: TextView? = null
     private var mCurrentPosition = ORDER_FIRST_INDEX
-    private var orderNo = ""
-    private var thirdNo = ""
     private val viewModel: OrdeSendViewModel by viewModels()
     private val beanList by lazy {
         mutableListOf<OrderThirdListBean>()
@@ -114,13 +112,20 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
 
     private fun getData() {
         mAdapter.loadMoreModule.isEnableLoadMore = false
-        if (!orderNo.isNullOrEmpty()) {
-            viewModel.getThirdBeanList(mCurrentPosition, ORDER_PAGE_SIZE, orderNo, "")
-        } else if (!thirdNo.isNullOrEmpty()) {
-            viewModel.getThirdBeanList(mCurrentPosition, ORDER_PAGE_SIZE, "", thirdNo)
-        } else {
-            var ss = mBinding.editSearchActivityContent.text.toString()
-            viewModel.getThirdBeanList(mCurrentPosition, ORDER_PAGE_SIZE, ss, "")
+        if (tvSelectSearchType!!.text.equals("订单编号")) {
+            viewModel.getThirdBeanList(
+                mCurrentPosition,
+                ORDER_PAGE_SIZE,
+                "",
+                mBinding.editSearchActivityContent.text.toString()
+            )
+        } else if (tvSelectSearchType!!.text.equals("中台编号")) {
+            viewModel.getThirdBeanList(
+                mCurrentPosition,
+                ORDER_PAGE_SIZE,
+                mBinding.editSearchActivityContent.text.toString(),
+                ""
+            )
         }
     }
 
@@ -268,8 +273,8 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
             mPopupWindow!!.setBackgroundDrawable(dw)
             val tvPhone = view.findViewById<TextView>(R.id.tv_phone)
             val tvOrder = view.findViewById<TextView>(R.id.tv_order)
-            tvPhone.text = "订单号"
-            tvOrder.text = "三方单号"
+            tvPhone.text = "订单编号"
+            tvOrder.text = "中台编号"
             if (tvSelectSearchType?.getText() == tvPhone.text) {
                 tvPhone.isSelected = true
                 tvOrder.isSelected = false
@@ -282,20 +287,16 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
                     mPopupWindow!!.dismiss()
                     mPopupWindow = null
                 }
-                tvSelectSearchType!!.text = "订单号"
-                mBinding.editSearchActivityContent.hint = "请输入订单号进行搜索"
-                orderNo = mBinding.editSearchActivityContent.text.toString()
-                thirdNo = ""
+                tvSelectSearchType!!.text = "订单编号"
+                mBinding.editSearchActivityContent.hint = "请输入订单编号进行搜索"
             }
             tvOrder.setOnClickListener {
                 if (mPopupWindow != null) {
                     mPopupWindow!!.dismiss()
                     mPopupWindow = null
                 }
-                tvSelectSearchType!!.text = "三方单号"
-                mBinding.editSearchActivityContent.hint = "请输入三方单号进行搜索"
-                orderNo = ""
-                thirdNo = mBinding.editSearchActivityContent.text.toString()
+                tvSelectSearchType!!.text = "中台编号"
+                mBinding.editSearchActivityContent.hint = "请输入中台编号进行搜索"
             }
             mPopupWindow!!.width = tvSelectSearchType?.getWidth()!!
         }

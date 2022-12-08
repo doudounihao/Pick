@@ -153,12 +153,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_10"
-            android:text="@{@string/order_no+item.orderNo}"
+            android:text="@{@string/third_no+item.orderNo}"
             android:textColor="@color/colorGray6"
             android:textSize="@dimen/sp_14"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_send_time_tip"
-            tools:text="订单编号：12345647" />
+            tools:text="中台编号：12345647" />
 
         <TextView
             android:id="@+id/tv_receive_address"

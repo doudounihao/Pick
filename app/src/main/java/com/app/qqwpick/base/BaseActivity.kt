@@ -1,5 +1,6 @@
 package com.app.qqwpick.base
 
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.hjq.toast.ToastUtils
 
 open class BaseActivity : AppCompatActivity() {
     private lateinit var mLoadingDialog: LoadingDialog
+    public lateinit var mContext: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +19,7 @@ open class BaseActivity : AppCompatActivity() {
         ActivityUtil.addActivity(this)
         StatusBarUtil.setTransparentForWindow(this)
         StatusBarUtil.setDarkMode(this)
+        mContext = this
     }
 
     override fun onDestroy() {

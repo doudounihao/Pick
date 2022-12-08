@@ -1,16 +1,18 @@
 package com.app.qqwpick.ui.home
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.qqwpick.R
 import com.app.qqwpick.adapter.ThirdGoodsAdapter
 import com.app.qqwpick.base.BaseVMActivity
-import com.app.qqwpick.data.home.OrderListBean
 import com.app.qqwpick.data.home.ThirdGoodsBean
 import com.app.qqwpick.databinding.ActivityThirdDetailBinding
 import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.viewmodels.OrdeSendViewModel
+import com.hjq.toast.ToastUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,6 +39,7 @@ class ThirdDetailActivity : BaseVMActivity<ActivityThirdDetailBinding>() {
         mBinding.rvGoods.layoutManager = LinearLayoutManager(this)
         mBinding.rvGoods.adapter = mAdapter
         mAdapter.notifyDataSetChanged()
+
     }
 
     override fun initData() {
@@ -59,6 +62,29 @@ class ThirdDetailActivity : BaseVMActivity<ActivityThirdDetailBinding>() {
                     mBinding.item = it.data
                     beanList.addAll(it.data?.orderDetails as MutableList<ThirdGoodsBean>)
                     mAdapter.notifyDataSetChanged()
+
+                    mBinding.tvOrderNoCopy.setOnClickListener {
+                        val clipboard =
+                            mContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText(
+                            "simple_text",
+                            mBinding.item?.channelOrderNo
+                        )
+                        clipboard.setPrimaryClip(clip)
+                        ToastUtils.show("已复制")
+                    }
+
+                    mBinding.tvThirdOrderNoCopy.setOnClickListener {
+                        val clipboard =
+                            mContext.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText(
+                            "simple_text",
+                            mBinding.item?.orderNo
+                        )
+                        clipboard.setPrimaryClip(clip)
+                        ToastUtils.show("已复制")
+                    }
+
                 }
             }
         })
