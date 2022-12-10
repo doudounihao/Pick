@@ -53,6 +53,16 @@ class OrderSearchActivity : BaseVMActivity<ActivityOrderSearchBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         tvSelectSearchType = mBinding.tvSelectSearchType
         tvSelectSearchTypeBg = mBinding.tvSelectSearchTypeBg
+
+        mBinding.tvSearch.setOnClickListener {
+            if (mBinding.editSearchActivityContent.text.isNullOrEmpty()) {
+                ToastUtils.show("请输入要搜索的内容")
+            } else {
+                getData()
+            }
+            hideSoftInput(mBinding.editSearchActivityContent.windowToken)
+        }
+
         mBinding.tvSelectSearchType.setOnClickListener {
             showChangeSelectTypePop()
         }

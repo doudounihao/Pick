@@ -75,6 +75,24 @@
                         tools:text="订单编号：12345647" />
 
                     <TextView
+                        android:id="@+id/tv_order_no_copy"
+                        android:layout_width="54dp"
+                        android:layout_height="24dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/round_conner_grey_bg_12"
+                        android:drawableRight="@mipmap/icon_copy_details"
+                        android:paddingStart="6dp"
+                        android:paddingTop="3dp"
+                        android:paddingEnd="6dp"
+                        android:paddingBottom="3dp"
+                        android:text="复制"
+                        android:textColor="@color/colorGray6"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_order_no"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_order_no" />
+
+                    <TextView
                         android:id="@+id/tv_order_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

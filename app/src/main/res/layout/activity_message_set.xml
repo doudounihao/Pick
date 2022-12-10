@@ -251,7 +251,7 @@
                     android:drawableBottom="@drawable/et_line_bg"
                     android:gravity="center"
                     android:inputType="number"
-                    android:textColor="#FF5400"
+                    android:textColor="@color/color_blue_598"
                     android:textSize="16sp"
                     app:layout_constraintRight_toLeftOf="@+id/tv_unpick_unit"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -430,7 +430,7 @@
                     android:drawableBottom="@drawable/et_line_bg"
                     android:gravity="center"
                     android:inputType="number"
-                    android:textColor="#FF5400"
+                    android:textColor="@color/color_blue_598"
                     android:textSize="16sp"
                     app:layout_constraintRight_toLeftOf="@+id/tv_unsend_third"
                     app:layout_constraintTop_toTopOf="parent" />

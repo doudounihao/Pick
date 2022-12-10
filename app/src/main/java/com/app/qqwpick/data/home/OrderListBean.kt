@@ -29,6 +29,7 @@ data class OrderListBean(
     val serialNum: String,
     val storeId: String,
     val vipCardNo: String,
+    val finishTime: String,
     val orderSplitDetails: List<GoodsBean>
 ) : Serializable {
 

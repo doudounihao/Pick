@@ -26,6 +26,10 @@ data class OrderThirdListBean(
     val storeNo: String,
     val totalCommodityNum: Int,
     val totalWeight: Int,
+    val receiverCity: String,
+    val receiverProvince: String,
+    val receiverDistrict: String,
+    val receiverCoords: String,
     val deliveryInfo: DeliveryInfoBean
 ) : Serializable {
 

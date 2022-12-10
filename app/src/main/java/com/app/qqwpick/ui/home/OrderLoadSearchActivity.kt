@@ -41,6 +41,16 @@ class OrderLoadSearchActivity : BaseVMActivity<ActivityOrderLoadSearchBinding>()
         mBinding.ivBack.setOnClickListener {
             finish()
         }
+
+        mBinding.tvSearch.setOnClickListener {
+            if (mBinding.editSearchActivityContent.text.isNullOrEmpty()) {
+                ToastUtils.show("请输入要搜索的内容")
+            } else {
+                getData()
+            }
+            hideSoftInput(mBinding.editSearchActivityContent.windowToken)
+        }
+
         mBinding.common.recyclerData.layoutManager = LinearLayoutManager(this)
         mBinding.common.recyclerData.adapter = mAdapter
 

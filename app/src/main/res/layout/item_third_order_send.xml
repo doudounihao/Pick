@@ -82,11 +82,11 @@
             android:id="@+id/delivery_item_order_list_fragment_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
             android:layout_marginRight="10dp"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_num_bg"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/iv_num_bg" />
 
         <View
             android:id="@+id/cutline"
@@ -167,7 +167,9 @@
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginRight="@dimen/dp_10"
-            android:text="@{@string/order_address+item.receiverAddress}"
+            android:drawableRight="@mipmap/right"
+            android:drawablePadding="5dp"
+            android:text="@{@string/order_address+item.receiverCity+item.receiverProvince+item.receiverDistrict+item.receiverAddress}"
             android:textColor="@color/colorGray6"
             android:textSize="@dimen/sp_14"
             app:layout_constraintLeft_toLeftOf="parent"

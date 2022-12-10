@@ -4,6 +4,7 @@ import com.app.qqwpick.R
 import com.app.qqwpick.data.home.GoodsBean
 import com.app.qqwpick.databinding.ItemGoodsBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseDataBindingHolder
@@ -20,7 +21,7 @@ class GoodsAdapter(list: MutableList<GoodsBean>) :
             .applyDefaultRequestOptions(
                 RequestOptions()
                     .placeholder(R.drawable.ic_login)
-                    .centerCrop()
+                    .transform(RoundedCorners(8))
             )
             .load(item.commodityUrl).into(binding?.ivGoods!!)
     }

@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_marginRight="@dimen/dp_10"
-            android:text="@{item.getSendTime}"
+            android:text="@{item.finishTime}"
             android:textColor="@color/black22"
             android:textSize="16sp"
             app:layout_constraintRight_toRightOf="parent"
@@ -91,14 +91,17 @@
             android:layout_marginRight="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_10"
             android:drawableRight="@mipmap/right"
+            android:drawablePadding="5dp"
             android:gravity="left"
             android:text="@{@string/order_address+item.receiverAddress}"
             android:textColor="@color/colorGray6"
             android:textSize="@dimen/sp_14"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_order_no"
+            app:layout_constraintVertical_bias="0.0"
             tools:text="山西省太原市" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
