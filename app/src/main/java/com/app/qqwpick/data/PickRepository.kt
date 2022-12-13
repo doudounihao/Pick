@@ -80,7 +80,7 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
     }
 
     suspend fun getVersion(result: StateLiveData<VersionBean>) {
-        executeRequest({ api.getVersion("2.1.0") }, result)
+        executeRequest({ api.getVersion("1") }, result)
     }
 
     suspend fun getGrabNum(result: StateLiveData<Int>) {

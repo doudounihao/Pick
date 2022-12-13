@@ -29,6 +29,7 @@ class SystemActivity : BaseVMActivity<ActivitySystemBinding>() {
 
     val viewModel: UserViewModel by viewModels()
     var versionCode: String = ""
+    var oldCode: String = ""
 
     override fun initView(savedInstanceState: Bundle?) {
         mBinding.title.tvCenter.text = "系统设置"
@@ -63,12 +64,18 @@ class SystemActivity : BaseVMActivity<ActivitySystemBinding>() {
                 }
                 DataStatus.STATE_SUCCESS -> {
                     dismissLoading()
-                    versionCode = it.data?.standardVersion.toString()
-                    if (compareVersion(versionCode, "2.1.0") > 0) {
+                    versionCode = it.data?.newver.toString()
+                    oldCode = it.data?.oldver.toString()
+                    var isUpdate = false
+                    if (compareVersion(oldCode, BuildConfig.VERSION_NAME) > 0) {
+                        isUpdate = true
+                    }
+                    if (compareVersion(versionCode, BuildConfig.VERSION_NAME) > 0) {
                         updateApp(
-                            it.data?.url.toString(),
-                            it.data?.versionExplanation.toString(),
-                            "版本更新"
+                            it.data?.address.toString(),
+                            it.data?.content.toString(),
+                            it.data?.title.toString(),
+                            isUpdate
                         )
                     } else {
                         ToastUtils.show("当前已是最新版本")
@@ -147,10 +154,20 @@ class SystemActivity : BaseVMActivity<ActivitySystemBinding>() {
         return 0
     }
 
-    private fun updateApp(apkUrl: String, updateContent: String, updateTitle: String) {
+    private fun updateApp(
+        apkUrl: String,
+        updateContent: String,
+        updateTitle: String,
+        isUpdate: Boolean
+    ) {
         UpdateAppUtils
             .getInstance()
             .apkUrl(apkUrl)
+            .updateConfig(
+                UpdateConfig(
+                    force = isUpdate
+                )
+            )
             .uiConfig(
                 UiConfig(
                     uiType = UiType.CUSTOM,
@@ -163,7 +180,7 @@ class SystemActivity : BaseVMActivity<ActivitySystemBinding>() {
                     updateConfig: UpdateConfig,
                     uiConfig: UiConfig
                 ) {
-                    view?.findViewById<TextView>(R.id.tv_update_title)?.text = "版本更新啦"
+                    view?.findViewById<TextView>(R.id.tv_update_title)?.text = updateTitle
                     view?.findViewById<TextView>(R.id.tv_update_content)?.text = updateContent
                 }
             })

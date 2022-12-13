@@ -20,6 +20,7 @@ import com.amap.api.services.geocoder.RegeocodeResult
 import com.app.qqwpick.R
 import com.app.qqwpick.adapter.ThirdOrderSendListAdapter
 import com.app.qqwpick.base.BaseVMActivity
+import com.app.qqwpick.data.home.MapBean
 import com.app.qqwpick.data.home.OrderThirdListBean
 import com.app.qqwpick.databinding.ActivityThirdSearchBinding
 import com.app.qqwpick.net.DataStatus
@@ -27,6 +28,8 @@ import com.app.qqwpick.util.ActivityUtil
 import com.app.qqwpick.util.ORDER_FIRST_INDEX
 import com.app.qqwpick.util.ORDER_PAGE_SIZE
 import com.app.qqwpick.viewmodels.OrdeSendViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.hjq.toast.ToastUtils
 import com.kongzue.dialogx.dialogs.BottomMenu
 import com.kongzue.dialogx.dialogs.MessageDialog
@@ -92,7 +95,7 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
             var bean = mAdapter.getItem(position)
             when (view.id) {
                 R.id.tv_receive_address -> {
-                    toMap(bean.receiverAddress)
+                    toMap(bean)
                 }
                 R.id.tv_send -> {
                     if (bean.deliveryInfo.currentStatus == 4) {
@@ -233,7 +236,27 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
         }
     }
 
-    private fun toMap(address: String) {
+    private fun toMap(bean: OrderThirdListBean) {
+        var address =
+            bean.receiverCity + bean.receiverProvince + bean.receiverDistrict + bean.receiverAddress
+        if (!bean.receiverCoords.isNullOrEmpty()) {
+            var maoList: ArrayList<MapBean>
+            var listType = object : TypeToken<ArrayList<MapBean>>() {}.type
+            maoList = Gson().fromJson(bean.receiverCoords, listType)
+            var dataList = maoList.filter {
+                it.coordsType.equals("1")
+            }
+            if (dataList.size > 0) {
+                toGaoDe(address, maoList.get(0).lat, maoList.get(0).lng)
+            } else {
+                searchGaoDe(address)
+            }
+        } else {
+            searchGaoDe(address)
+        }
+    }
+
+    private fun searchGaoDe(address: String) {
         val geocodeSearch = GeocodeSearch(this)
         geocodeSearch.setOnGeocodeSearchListener(object : GeocodeSearch.OnGeocodeSearchListener {
             override fun onRegeocodeSearched(regeocodeResult: RegeocodeResult, i: Int) {}
@@ -247,15 +270,7 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
                             geocodeAddress.latLonPoint.latitude //纬度
                         val longititude =
                             geocodeAddress.latLonPoint.longitude //经度
-                        if (ActivityUtil.isInstallApk("com.autonavi.minimap")) {
-                            val intent = Intent.getIntent(
-                                "androidamap://navi?sourceApplication=&poiname=" + address + "&lat=" + latitude
-                                        + "&lon=" + longititude + "&dev=0"
-                            )
-                            startActivity(intent)
-                        } else {
-                            ToastUtils.show("没有安装高德地图")
-                        }
+                        toGaoDe(address, latitude, longititude)
                     } else {
                         ToastUtils.show("地址名出错");
                     }
@@ -264,6 +279,18 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
         })
         val geocodeQuery = GeocodeQuery(address, "29")
         geocodeSearch.getFromLocationNameAsyn(geocodeQuery)
+    }
+
+    private fun toGaoDe(address: String, latitude: Double, longititude: Double) {
+        if (ActivityUtil.isInstallApk("com.autonavi.minimap")) {
+            val intent = Intent.getIntent(
+                "androidamap://navi?sourceApplication=&poiname=" + address + "&lat=" + latitude
+                        + "&lon=" + longititude + "&dev=0"
+            )
+            startActivity(intent)
+        } else {
+            ToastUtils.show("没有安装高德地图")
+        }
     }
 
     /**

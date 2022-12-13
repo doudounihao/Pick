@@ -13,6 +13,7 @@ import com.hjq.permissions.XXPermissions
 import com.hjq.toast.ToastUtils
 import com.kongzue.dialogx.DialogX
 import com.kongzue.dialogx.style.KongzueStyle
+import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
 import dagger.hilt.android.HiltAndroidApp
 import update.UpdateAppUtils
@@ -33,6 +34,7 @@ class MainApplication : Application() {
         DialogX.globalStyle = KongzueStyle.style();
         initUser()
         startKeepLive()
+        initBugly()
     }
 
     fun initUser() {
@@ -110,6 +112,10 @@ class MainApplication : Application() {
                 }
             }
         )
+    }
+
+    fun initBugly() {
+        CrashReport.initCrashReport(applicationContext, "4c642e61ff", BuildConfig.DEBUG)
     }
 
     companion object {

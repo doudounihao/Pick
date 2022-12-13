@@ -74,9 +74,9 @@ interface NetApi {
     /**
      * 获取最新版本号
      */
-    @GET("app/api/express/version/{version}/Android")
+    @GET("app/api/new/express/version/{type}")
     suspend fun getVersion(
-        @Path("version") version: String
+        @Path("type") version: String
     ): BaseResult<VersionBean>
 
     /**

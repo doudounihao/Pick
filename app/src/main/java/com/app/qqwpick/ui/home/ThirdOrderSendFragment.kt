@@ -212,12 +212,12 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
             bean.receiverCity + bean.receiverProvince + bean.receiverDistrict + bean.receiverAddress
         if (!bean.receiverCoords.isNullOrEmpty()) {
             var maoList: ArrayList<MapBean>
-            val listType = object : TypeToken<ArrayList<MapBean>>() {}.type
+            var listType = object : TypeToken<ArrayList<MapBean>>() {}.type
             maoList = Gson().fromJson(bean.receiverCoords, listType)
-            maoList.filter {
+            var dataList = maoList.filter {
                 it.coordsType.equals("1")
             }
-            if (maoList.size > 0) {
+            if (dataList.size > 0) {
                 toGaoDe(address, maoList.get(0).lat, maoList.get(0).lng)
             } else {
                 searchGaoDe(address)
