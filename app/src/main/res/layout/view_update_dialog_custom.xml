@@ -9,27 +9,44 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_custom_update_dialog"
         android:paddingBottom="15dp">
+
+        <ImageView
+            android:id="@+id/iv_top"
+            android:layout_width="0dp"
+            android:layout_height="90dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/img_upgrade_pop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/round_conner_white_bg_bottom_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_top" />
 
         <TextView
             android:id="@+id/tv_update_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:textColor="@color/text_title"
+            android:textColor="@color/black22"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_top"
             tools:text="版本更新啦!" />
 
         <ScrollView
             android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="90dp"
+            android:layout_height="150dp"
             android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"
             android:overScrollMode="never"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,25 +59,29 @@
                 android:layout_gravity="top"
                 android:gravity="start"
                 android:lineSpacingExtra="5dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:textColor="@color/text_content"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@color/colorGray6"
                 android:textSize="14sp"
-                tools:text="1、快来升级最新版本\n2、这次更漂亮了\n3、快点来吧" />
+                tools:text="1、快来升级最新版本\n2、这次更漂亮了\n3、快点来升" />
         </ScrollView>
 
         <TextView
             android:id="@+id/btn_update_sure"
-            android:layout_width="0dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/bg_update_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15"
+            android:layout_marginBottom="@dimen/dp_15"
+            android:background="@drawable/tv_next_blue_bg"
             android:gravity="center"
+            android:paddingLeft="32dp"
+            android:paddingTop="8dp"
+            android:paddingRight="32dp"
+            android:paddingBottom="8dp"
             android:text="@string/update_now"
             android:textColor="@color/white"
             android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
@@ -81,10 +102,10 @@
 
     <ImageView
         android:id="@+id/btn_update_cancel"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:src="@drawable/ic_close" />
+        android:layout_marginTop="15dp"
+        android:src="@mipmap/btn_close_down_pop" />
 
 </LinearLayout>

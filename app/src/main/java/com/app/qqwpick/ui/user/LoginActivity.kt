@@ -3,8 +3,6 @@ package com.app.qqwpick.ui.user
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.activity.viewModels
 import androidx.lifecycle.observe
 import com.app.qqwpick.R
@@ -121,7 +119,7 @@ class LoginActivity : BaseVMActivity<ActivityLoginBinding>(), CodeInputView.OnTe
             }
             DataStatus.STATE_SUCCESS -> {
                 dismissLoading()
-                ToastUtils.show("发送成功" + it.data)
+                ToastUtils.show("发送成功")
             }
         }
     }

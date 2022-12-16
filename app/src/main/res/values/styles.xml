@@ -8,6 +8,16 @@
         <item name="colorPrimaryDark">@color/color_0099ff</item>
         <item name="colorAccent">@color/color_0099ff</item>
     </style>
+
+    <style name="StartTheme" parent="Theme.AppCompat.Light">
+        <!--启动页背景-->
+        <item name="android:windowBackground">@mipmap/splash</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--设置全屏模式-->
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
     <!--没有选中的样式-->
     <style name="bottom_normal_text">
         <item name="android:textColor">@color/color_3e3e3e</item>

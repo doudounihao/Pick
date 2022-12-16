@@ -3,8 +3,9 @@ package com.app.qqwpick.ui
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.app.qqwpick.R
+import com.app.qqwpick.base.BaseVMActivity
+import com.app.qqwpick.databinding.ActivitySplashBinding
 import com.app.qqwpick.ui.home.HomeActivity
 import com.app.qqwpick.ui.user.AccountActivity
 import com.app.qqwpick.util.ROLE_GRAB
@@ -14,9 +15,8 @@ import com.app.qqwpick.util.SpUtils
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 
-class SplashActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+class SplashActivity : BaseVMActivity<ActivitySplashBinding>() {
+    override fun initView(savedInstanceState: Bundle?) {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT //强制竖屏
         setContentView(R.layout.activity_splash)
         var per = arrayOf(
@@ -50,5 +50,9 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_splash
     }
 }

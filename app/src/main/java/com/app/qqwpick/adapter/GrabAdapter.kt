@@ -15,13 +15,15 @@ class GrabAdapter(list: MutableList<GrabListBean>) :
     override fun convert(holder: BaseDataBindingHolder<ItemGrabBinding>, item: GrabListBean) {
         val binding = holder.dataBinding
         binding?.item = item
-        val s: Array<String> = item.serialNum.split(" ").toTypedArray()
-        var s1 = s[0]
-        s1 = s1.replace("#".toRegex(), "")
-        binding?.tvNum?.setText(s1)
-        val str = StringBuilder()
-        str.replace(0, str.length, "(").append(s[1]).append(")")
-        binding?.txtItemOrderListFragmentSerialDate?.setText(str.toString())
+        if (item.serialNum.contains(" ")) {
+            val s: Array<String> = item.serialNum.split(" ").toTypedArray()
+            var s1 = s[0]
+            s1 = s1.replace("#".toRegex(), "")
+            binding?.tvNum?.setText(s1)
+            val str = StringBuilder()
+            str.replace(0, str.length, "(").append(s[1]).append(")")
+            binding?.txtItemOrderListFragmentSerialDate?.setText(str.toString())
+        }
     }
 
 }

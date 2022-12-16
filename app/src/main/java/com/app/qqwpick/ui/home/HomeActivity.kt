@@ -206,8 +206,6 @@ class HomeActivity : BaseVMActivity<ActivityHomeBinding>() {
                             it.data?.title.toString(),
                             isUpdate
                         )
-                    } else {
-                        ToastUtils.show("当前已是最新版本")
                     }
                 }
             }

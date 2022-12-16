@@ -1,5 +1,6 @@
 package com.app.qqwpick.adapter
 
+import android.text.TextUtils
 import com.app.qqwpick.R
 import com.app.qqwpick.data.home.OrderLoadListBean
 import com.app.qqwpick.databinding.ItemOrderLoadBinding
@@ -18,6 +19,15 @@ class OrderLoadListAdapter(list: MutableList<OrderLoadListBean>) :
     ) {
         val binding = holder.dataBinding
         binding?.item = item
+        if (item.serialNum.contains(" ")) {
+            val s: Array<String> = item.serialNum.split(" ").toTypedArray()
+            var s1 = s[0]
+            s1 = s1.replace("#".toRegex(), "")
+            binding?.tvNum?.setText(s1)
+            val str = StringBuilder()
+            str.replace(0, str.length, "(").append(s[1]).append(")")
+            binding?.txtItemOrderListFragmentSerialDate?.setText(str.toString())
+        }
     }
 
 }

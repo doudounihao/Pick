@@ -58,10 +58,10 @@ const val ROLE_TYPE = "role_type"
 const val ROLE_SEND = "type_send"
 const val ROLE_GRAB = "type_grab"
 
-const val IOS_EWM = "11111111"
+const val IOS_EWM = "https://itunes.apple.com/cn/app/id1660170412?mt=8"
 const val ANDROID_EWM_URL = "android_ewm_url"
 
 const val SCREAT_URL = "http://agreement.quanqiuwa.com/privacy_qqw_peisong.html"
 
-const val BASE_URL = "http://dev-express.quanqiuwa.com"
-//const val BASE_URL = "https://fresh-express.quanqiuwa.com"
+//const val BASE_URL = "http://dev-express.quanqiuwa.com"
+const val BASE_URL = "https://fresh-express.quanqiuwa.com"
