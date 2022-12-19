@@ -13,6 +13,7 @@ import com.app.qqwpick.util.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import org.json.JSONObject
+import retrofit2.http.Query
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -195,11 +196,14 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
         pageIndex: Int,
         pageSize: Int,
         orderNo: String,
+        status: Int,
         channelOrderNo: String,
+        finishSTime: String,
+        finishETime: String,
         result: StateLiveData<BasePagingResult<List<OrderThirdListBean>>>
     ) {
         val list = mutableListOf<Int>()
-        list.add(4)
+        list.add(status)
         executeRequest(
             {
                 api.getThirdOrderList(
@@ -207,7 +211,9 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
                     pageSize,
                     list,
                     orderNo,
-                    channelOrderNo
+                    channelOrderNo,
+                    finishSTime,
+                    finishETime
                 )
             },
             result

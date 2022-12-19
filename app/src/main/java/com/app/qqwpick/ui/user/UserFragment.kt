@@ -39,6 +39,18 @@ class UserFragment : BaseVMFragment<FragmentUserBinding>() {
             startActivity(intent)
         }
 
+        mBinding.tvTodayThird.setOnClickListener {
+            var intent = Intent(requireContext(), ThirdFinishActivity::class.java)
+            intent.putExtra("type", "today")
+            startActivity(intent)
+        }
+
+        mBinding.tvMonthThird.setOnClickListener {
+            var intent = Intent(requireContext(), ThirdFinishActivity::class.java)
+            intent.putExtra("month", "month")
+            startActivity(intent)
+        }
+
         mBinding.tvUserType.setOnClickListener {
             val intent = Intent(requireContext(), SelectRoleActivity::class.java)
             startActivity(intent)

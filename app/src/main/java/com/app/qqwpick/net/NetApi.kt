@@ -189,7 +189,9 @@ interface NetApi {
         @Query("orderStatusList") orderStatusList: List<Int>,
 //        @Query("status") status: String,//UNCONFIRMED("商家未接单", 1)CONFIRMED("商家已接单", 2)("备货完成", 3)("已发货", 4), ("已完成", 5)("已取消", 6),
         @Query("orderNo") orderNo: String,//路路通单号
-        @Query("channelOrderNo") channelOrderNo: String//中台单号
+        @Query("channelOrderNo") channelOrderNo: String,//中台单号
+        @Query("finishSTime") finishSTime: String,
+        @Query("finishETime") finishETime: String
     ): BaseResult<BasePagingResult<List<OrderThirdListBean>>>
 
     /**

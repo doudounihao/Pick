@@ -86,10 +86,22 @@ class OrdeSendViewModel @Inject constructor(val pickRepo: PickRepository) :
         pageIndex: Int,
         pageSize: Int,
         orderNo: String,
-        channelOrderNo: String
+        status: Int,
+        channelOrderNo: String,
+        finishSTime: String,
+        finishETime: String
     ) {
         viewModelScope.launch {
-            pickRepo.getThirdOrderList(pageIndex, pageSize, orderNo, channelOrderNo, thirdBeanList)
+            pickRepo.getThirdOrderList(
+                pageIndex,
+                pageSize,
+                orderNo,
+                status,
+                channelOrderNo,
+                finishSTime,
+                finishETime,
+                thirdBeanList
+            )
         }
     }
 

@@ -27,6 +27,7 @@ import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.util.ActivityUtil
 import com.app.qqwpick.util.ORDER_FIRST_INDEX
 import com.app.qqwpick.util.ORDER_PAGE_SIZE
+import com.app.qqwpick.util.THIRD_SEND_STATUS
 import com.app.qqwpick.viewmodels.OrdeSendViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -130,13 +131,19 @@ class ThirdSearchActivity : BaseVMActivity<ActivityThirdSearchBinding>() {
                 mCurrentPosition,
                 ORDER_PAGE_SIZE,
                 "",
-                mBinding.editSearchActivityContent.text.toString()
+                THIRD_SEND_STATUS,
+                mBinding.editSearchActivityContent.text.toString(),
+                "",
+                ""
             )
         } else if (tvSelectSearchType!!.text.equals("中台编号")) {
             viewModel.getThirdBeanList(
                 mCurrentPosition,
                 ORDER_PAGE_SIZE,
                 mBinding.editSearchActivityContent.text.toString(),
+                THIRD_SEND_STATUS,
+                "",
+                "",
                 ""
             )
         }

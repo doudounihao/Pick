@@ -100,7 +100,15 @@ class ThirdOrderSendFragment : BaseVMFragment<FragmentOrderSendBinding>() {
 
     private fun getData() {
         mAdapter.loadMoreModule.isEnableLoadMore = false
-        viewModel.getThirdBeanList(mCurrentPosition, ORDER_PAGE_SIZE, "", "")
+        viewModel.getThirdBeanList(
+            mCurrentPosition,
+            ORDER_PAGE_SIZE,
+            "",
+            THIRD_SEND_STATUS,
+            "",
+            "",
+            ""
+        )
     }
 
     override fun startObserver() {
