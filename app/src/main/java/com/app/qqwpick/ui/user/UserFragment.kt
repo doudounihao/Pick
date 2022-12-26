@@ -87,12 +87,36 @@ class UserFragment : BaseVMFragment<FragmentUserBinding>() {
     override fun initData() {
         super.initData()
         viewModel.getPersonDetail()
+        viewModel.getTodayThird()
+        viewModel.getMonthThird()
     }
 
     override fun startObserver() {
         super.startObserver()
         viewModel.userBean.observe(this, {
             handleResult(it)
+        })
+
+        viewModel.todayThird.observe(this, {
+            when (it.dataStatus) {
+                DataStatus.STATE_ERROR -> {
+                    toast(it.exception!!.msg)
+                }
+                DataStatus.STATE_SUCCESS -> {
+                    mBinding.tvTodayThird.text = it.data.toString()
+                }
+            }
+        })
+
+        viewModel.monthThird.observe(this, {
+            when (it.dataStatus) {
+                DataStatus.STATE_ERROR -> {
+                    toast(it.exception!!.msg)
+                }
+                DataStatus.STATE_SUCCESS -> {
+                    mBinding.tvMonthThird.text = it.data.toString()
+                }
+            }
         })
     }
 
