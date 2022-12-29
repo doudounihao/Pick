@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.media.*
 import android.media.AudioManager.OnAudioFocusChangeListener
 import android.os.*
@@ -13,7 +12,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.observe
-import com.amap.api.location.AMapLocation
 import com.app.qqwpick.MainApplication
 import com.app.qqwpick.R
 import com.app.qqwpick.base.StateLiveData
@@ -23,6 +21,11 @@ import com.app.qqwpick.data.home.OrderThirdListBean
 import com.app.qqwpick.data.user.UserBean
 import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.util.*
+import com.hjq.toast.ToastUtils
+import com.tencent.map.geolocation.TencentLocation
+import com.tencent.map.geolocation.TencentLocationListener
+import com.tencent.map.geolocation.TencentLocationManager
+import com.tencent.map.geolocation.TencentLocationRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -35,7 +38,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class LooperService : Service(), LifecycleOwner {
+class LooperService : Service(), LifecycleOwner, TencentLocationListener {
 
     @Inject
     lateinit var re: PickRepository
@@ -56,6 +59,7 @@ class LooperService : Service(), LifecycleOwner {
     private var thirdBeanList = mutableListOf<OrderThirdListBean>()
 
     private val mLifecycleRegistry = LifecycleRegistry(this)
+
     override fun onBind(intent: Intent?): IBinder? {
         mLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
         return LocalBinder()
@@ -93,6 +97,8 @@ class LooperService : Service(), LifecycleOwner {
         threadPool.shutdown()
         handler.removeCallbacksAndMessages(null)
         EventBus.getDefault().unregister(this)//解绑
+        val locationManager = TencentLocationManager.getInstance(MainApplication.getInstance())
+        locationManager.removeUpdates(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -172,19 +178,25 @@ class LooperService : Service(), LifecycleOwner {
 
     private fun getLocation() {
         if (SpUtils.getBoolean(MAP_OPEN) == true) {
-            LocationUtils.getInstance(this)!!.getLocation(object : LocationUtils.LocationCallBack {
-                override fun setLocation(location: AMapLocation?) {
-                    if (location != null) {
-                        GlobalScope.launch {
-                            re.uploadAddress(
-                                location.longitude.toString(),
-                                location.latitude.toString(),
-                                isUpload
-                            )
-                        }
-                    }
-                }
-            })
+            var request = TencentLocationRequest.create()
+            request.setInterval(30000).setRequestLevel(1)
+            val locationManager = TencentLocationManager.getInstance(MainApplication.getInstance())
+            if (locationManager != null && request != null) {
+                locationManager.requestLocationUpdates(request, this, Looper.getMainLooper())
+            }
+//            LocationUtils.getInstance(this)!!.getLocation(object : LocationUtils.LocationCallBack {
+//                override fun setLocation(location: AMapLocation?) {
+//                    if (location != null) {
+//                        GlobalScope.launch {
+//                            re.uploadAddress(
+//                                location.longitude.toString(),
+//                                location.latitude.toString(),
+//                                isUpload
+//                            )
+//                        }
+//                    }
+//                }
+//            })
         }
     }
 
@@ -425,4 +437,19 @@ class LooperService : Service(), LifecycleOwner {
                 "Nav focus change:$focusChange"
             )
         }
+
+    override fun onLocationChanged(location: TencentLocation?, p1: Int, p2: String?) {
+        if (location != null) {
+            GlobalScope.launch {
+                re.uploadAddress(
+                    location.longitude.toString(),
+                    location.latitude.toString(),
+                    isUpload
+                )
+            }
+        }
+    }
+
+    override fun onStatusUpdate(p0: String?, p1: Int, p2: String?) {
+    }
 }

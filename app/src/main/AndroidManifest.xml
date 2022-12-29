@@ -59,6 +59,8 @@
             android:name="com.amap.api.v2.apikey"
             android:value="9faeeaca801778052f2cfafcd8662be9" />
 
+        <meta-data android:name="TencentMapSDK" android:value="VFVBZ-VUNNU-XPSVD-473Z2-TONL5-MWFKS" />
+
         <service android:name="com.amap.api.location.APSService"></service>
 
         <service
