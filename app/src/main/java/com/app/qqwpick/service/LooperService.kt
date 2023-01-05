@@ -439,7 +439,7 @@ class LooperService : Service(), LifecycleOwner, TencentLocationListener {
         }
 
     override fun onLocationChanged(location: TencentLocation?, p1: Int, p2: String?) {
-        if (location != null) {
+        if (location != null && (SpUtils.getBoolean(MAP_OPEN) == true)) {
             GlobalScope.launch {
                 re.uploadAddress(
                     location.longitude.toString(),

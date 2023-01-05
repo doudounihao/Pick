@@ -262,11 +262,16 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
         executeRequest({ api.thirdOrderRemind(requestBody) }, result)
     }
 
-    suspend fun thirdOrderFinish(finishSTime: String, finishETime: String, result: StateLiveData<Int>) {
+    suspend fun thirdOrderFinish(
+        finishSTime: String,
+        finishETime: String,
+        result: StateLiveData<Int>
+    ) {
         val parm = JSONObject()
         parm.put("storeNo", SpUtils.getString(STORE_NO))
         parm.put("finishSTime", finishSTime)
         parm.put("finishETime", finishETime)
+        parm.put("status", "5")
         val requestBody = RequestBody.create(
             "application/json".toMediaTypeOrNull(),
             parm.toString()
