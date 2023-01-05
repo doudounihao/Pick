@@ -211,6 +211,32 @@ class PickRepository @Inject constructor(private val api: NetApi) : BaseReposito
                     pageSize,
                     list,
                     orderNo,
+                    channelOrderNo
+                )
+            },
+            result
+        )
+    }
+
+    suspend fun getThirdOrderFinishList(
+        pageIndex: Int,
+        pageSize: Int,
+        orderNo: String,
+        status: Int,
+        channelOrderNo: String,
+        finishSTime: String,
+        finishETime: String,
+        result: StateLiveData<BasePagingResult<List<OrderThirdListBean>>>
+    ) {
+        val list = mutableListOf<Int>()
+        list.add(status)
+        executeRequest(
+            {
+                api.getThirdOrderFinishList(
+                    pageIndex,
+                    pageSize,
+                    list,
+                    orderNo,
                     channelOrderNo,
                     finishSTime,
                     finishETime

@@ -189,6 +189,19 @@ interface NetApi {
         @Query("orderStatusList") orderStatusList: List<Int>,
 //        @Query("status") status: String,//UNCONFIRMED("商家未接单", 1)CONFIRMED("商家已接单", 2)("备货完成", 3)("已发货", 4), ("已完成", 5)("已取消", 6),
         @Query("orderNo") orderNo: String,//路路通单号
+        @Query("channelOrderNo") channelOrderNo: String
+    ): BaseResult<BasePagingResult<List<OrderThirdListBean>>>
+
+    /**
+     * 查询三方订单
+     */
+    @GET("app/api/optimus/delivery/order/list")
+    suspend fun getThirdOrderFinishList(
+        @Query("pageIndex") pageSize: Int,
+        @Query("pageSize") pageIndex: Int,
+        @Query("orderStatusList") orderStatusList: List<Int>,
+//        @Query("status") status: String,//UNCONFIRMED("商家未接单", 1)CONFIRMED("商家已接单", 2)("备货完成", 3)("已发货", 4), ("已完成", 5)("已取消", 6),
+        @Query("orderNo") orderNo: String,//路路通单号
         @Query("channelOrderNo") channelOrderNo: String,//中台单号
         @Query("finishSTime") finishSTime: String,
         @Query("finishETime") finishETime: String

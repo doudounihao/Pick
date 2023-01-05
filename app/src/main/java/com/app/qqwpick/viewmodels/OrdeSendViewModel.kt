@@ -105,6 +105,31 @@ class OrdeSendViewModel @Inject constructor(val pickRepo: PickRepository) :
         }
     }
 
+    var thirdBeanFinishList = StateLiveData<BasePagingResult<List<OrderThirdListBean>>>()
+
+    fun getThirdOrderFinishList(
+        pageIndex: Int,
+        pageSize: Int,
+        orderNo: String,
+        status: Int,
+        channelOrderNo: String,
+        finishSTime: String,
+        finishETime: String
+    ) {
+        viewModelScope.launch {
+            pickRepo.getThirdOrderFinishList(
+                pageIndex,
+                pageSize,
+                orderNo,
+                status,
+                channelOrderNo,
+                finishSTime,
+                finishETime,
+                thirdBeanFinishList
+            )
+        }
+    }
+
     var stratThirdDelivery = StateLiveData<Boolean>()
 
     fun startThirdDelivery(orderNo: String) {

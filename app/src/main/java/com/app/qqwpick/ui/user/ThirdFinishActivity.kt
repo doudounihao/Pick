@@ -74,7 +74,7 @@ class ThirdFinishActivity : BaseVMActivity<ActivityFinishOrderBinding>() {
 
     private fun getData() {
         mAdapter.loadMoreModule.isEnableLoadMore = false
-        viewModel.getThirdBeanList(
+        viewModel.getThirdOrderFinishList(
             mCurrentPosition,
             ORDER_PAGE_SIZE,
             "",
@@ -87,7 +87,7 @@ class ThirdFinishActivity : BaseVMActivity<ActivityFinishOrderBinding>() {
 
     override fun startObserver() {
         super.startObserver()
-        viewModel.thirdBeanList.observe(this, {
+        viewModel.thirdBeanFinishList.observe(this, {
             when (it.dataStatus) {
                 DataStatus.STATE_LOADING -> {
                     if (mCurrentPosition == ORDER_FIRST_INDEX && !mBinding.refreshLayout.isRefreshing) {
