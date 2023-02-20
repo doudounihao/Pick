@@ -15,6 +15,7 @@ import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.util.ActivityUtil
 import com.app.qqwpick.util.ROLE_TYPE
 import com.app.qqwpick.util.SpUtils
+import com.app.qqwpick.util.USER_BEAN
 import com.app.qqwpick.viewmodels.UserViewModel
 import com.hjq.toast.ToastUtils
 import constant.UiType
@@ -96,6 +97,7 @@ class SystemActivity : BaseVMActivity<ActivitySystemBinding>() {
             DataStatus.STATE_SUCCESS -> {
                 ActivityUtil.finishAllActivity()
                 SpUtils.put(ROLE_TYPE, "")
+                SpUtils.removeKey(USER_BEAN)
                 var intent = Intent(this, AccountActivity::class.java)
                 startActivity(intent)
                 dismissLoading()

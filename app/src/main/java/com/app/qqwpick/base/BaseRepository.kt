@@ -1,8 +1,16 @@
 package com.app.qqwpick.base
 
+import android.content.Intent
+import com.app.qqwpick.MainApplication
 import com.app.qqwpick.net.DataStatus
 import com.app.qqwpick.net.ResultException
 import com.app.qqwpick.net.ResultState
+import com.app.qqwpick.ui.user.AccountActivity
+import com.app.qqwpick.ui.user.LoginActivity
+import com.app.qqwpick.util.ActivityUtil
+import com.app.qqwpick.util.ROLE_TYPE
+import com.app.qqwpick.util.SpUtils
+import com.app.qqwpick.util.USER_BEAN
 import com.bbq.net.exception.DealException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -82,6 +90,14 @@ open class BaseRepository {
             baseResp.exception = DealException.handlerException(e)
         } finally {
             stateLiveData.postValue(baseResp)
+            if (baseResp.exception?.errCode.equals("401")) {
+                ActivityUtil.finishAllActivity()
+                SpUtils.put(ROLE_TYPE, "")
+                SpUtils.removeKey(USER_BEAN)
+                val intent = Intent(MainApplication.getInstance(), AccountActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                MainApplication.getInstance().startActivity(intent)
+            }
         }
     }
 

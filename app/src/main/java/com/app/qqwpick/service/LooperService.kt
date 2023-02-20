@@ -169,20 +169,25 @@ class LooperService : Service(), LifecycleOwner, TencentLocationListener {
     var thirdNum = StateLiveData<Int>()
 
     fun getGrabdata() {
-        if (SpUtils.getBoolean(GRAB_ORDER_REMIND_SWITCH) == true) {
-            GlobalScope.launch {
-                re.getGrabNum(grabNum)
+        if (!SpUtils.getParcelable<UserBean>(USER_BEAN)?.token.isNullOrEmpty()) {
+            if (SpUtils.getBoolean(GRAB_ORDER_REMIND_SWITCH) == true) {
+                GlobalScope.launch {
+                    re.getGrabNum(grabNum)
+                }
             }
         }
     }
 
     private fun getLocation() {
-        if (SpUtils.getBoolean(MAP_OPEN) == true) {
-            var request = TencentLocationRequest.create()
-            request.setInterval(30000).setRequestLevel(1)
-            val locationManager = TencentLocationManager.getInstance(MainApplication.getInstance())
-            if (locationManager != null && request != null) {
-                locationManager.requestLocationUpdates(request, this, Looper.getMainLooper())
+        if (!SpUtils.getParcelable<UserBean>(USER_BEAN)?.token.isNullOrEmpty()) {
+            if (SpUtils.getBoolean(MAP_OPEN) == true) {
+                var request = TencentLocationRequest.create()
+                request.setInterval(30000).setRequestLevel(1)
+                val locationManager =
+                    TencentLocationManager.getInstance(MainApplication.getInstance())
+                if (locationManager != null && request != null) {
+                    locationManager.requestLocationUpdates(request, this, Looper.getMainLooper())
+                }
             }
 //            LocationUtils.getInstance(this)!!.getLocation(object : LocationUtils.LocationCallBack {
 //                override fun setLocation(location: AMapLocation?) {
@@ -201,10 +206,12 @@ class LooperService : Service(), LifecycleOwner, TencentLocationListener {
     }
 
     private fun getRemind() {
-        if (SpUtils.getBoolean(NEW_ORDER_REMIND_SWITCH) == true) {
-            endTime = DateUtils.getCurrentTime1()
-            GlobalScope.launch {
-                re.getRemindOrderList(startTime, endTime, "3", remindOrder)
+        if (!SpUtils.getParcelable<UserBean>(USER_BEAN)?.token.isNullOrEmpty()) {
+            if (SpUtils.getBoolean(NEW_ORDER_REMIND_SWITCH) == true) {
+                endTime = DateUtils.getCurrentTime1()
+                GlobalScope.launch {
+                    re.getRemindOrderList(startTime, endTime, "3", remindOrder)
+                }
             }
         }
     }
@@ -369,50 +376,56 @@ class LooperService : Service(), LifecycleOwner, TencentLocationListener {
     }
 
     private fun getUnSendList() {
-        if (SpUtils.getBoolean(ORDER_UNSEND_MINUTE_SWITCH) == true) {
-            var minute = SpUtils.getString(ORDER_UNSEND_MINUTE)
-            beanList.forEach {
-                if (DateUtils.longToMin(
-                        DateUtils.computingTimeDifference(
-                            it.bespokeTimeTo,
-                            DateUtils.getCurrentTime1()
-                        )
-                    ) < minute?.toInt()!!
-                ) {
-                    val message = Message.obtain()
-                    message.what = 3
-                    handler.sendMessageDelayed(message, 1000)
-                    return
+        if (!SpUtils.getParcelable<UserBean>(USER_BEAN)?.token.isNullOrEmpty()) {
+            if (SpUtils.getBoolean(ORDER_UNSEND_MINUTE_SWITCH) == true) {
+                var minute = SpUtils.getString(ORDER_UNSEND_MINUTE)
+                beanList.forEach {
+                    if (DateUtils.longToMin(
+                            DateUtils.computingTimeDifference(
+                                it.bespokeTimeTo,
+                                DateUtils.getCurrentTime1()
+                            )
+                        ) < minute?.toInt()!!
+                    ) {
+                        val message = Message.obtain()
+                        message.what = 3
+                        handler.sendMessageDelayed(message, 1000)
+                        return
+                    }
                 }
             }
         }
     }
 
     private fun getThirdUnSendList() {
-        if (SpUtils.getBoolean(THIRD_ORDER_UNSEND_MINUTE_SWITCH) == true) {
-            var minute = SpUtils.getString(THIRD_ORDER_UNSEND_MINUTE)
-            thirdBeanList.forEach {
-                if (DateUtils.longToMin(
-                        DateUtils.computingTimeDifference(
-                            it.expectLatestSendTime,
-                            DateUtils.getCurrentTime1()
-                        )
-                    ) < minute?.toInt()!!
-                ) {
-                    val message = Message.obtain()
-                    message.what = 5
-                    handler.sendMessageDelayed(message, 1000)
-                    return
+        if (!SpUtils.getParcelable<UserBean>(USER_BEAN)?.token.isNullOrEmpty()) {
+            if (SpUtils.getBoolean(THIRD_ORDER_UNSEND_MINUTE_SWITCH) == true) {
+                var minute = SpUtils.getString(THIRD_ORDER_UNSEND_MINUTE)
+                thirdBeanList.forEach {
+                    if (DateUtils.longToMin(
+                            DateUtils.computingTimeDifference(
+                                it.expectLatestSendTime,
+                                DateUtils.getCurrentTime1()
+                            )
+                        ) < minute?.toInt()!!
+                    ) {
+                        val message = Message.obtain()
+                        message.what = 5
+                        handler.sendMessageDelayed(message, 1000)
+                        return
+                    }
                 }
             }
         }
     }
 
     private fun getThirdRemind() {
-        if (SpUtils.getBoolean(THIRD_ORDER_REMIND_SWITCH) == true) {
-            endThirdTime = DateUtils.getCurrentTime1()
-            GlobalScope.launch {
-                re.thirdOrderRemind(startThirdTime, endThirdTime, thirdNum)
+        if (!SpUtils.getParcelable<UserBean>(USER_BEAN)?.token.isNullOrEmpty()) {
+            if (SpUtils.getBoolean(THIRD_ORDER_REMIND_SWITCH) == true) {
+                endThirdTime = DateUtils.getCurrentTime1()
+                GlobalScope.launch {
+                    re.thirdOrderRemind(startThirdTime, endThirdTime, thirdNum)
+                }
             }
         }
     }

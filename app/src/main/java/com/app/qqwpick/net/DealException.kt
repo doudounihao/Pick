@@ -21,7 +21,10 @@ object DealException {
             ex = t
         } else if (t is HttpException) {
             ex = when (t.code()) {
-                ApiCode.UNAUTHORIZED,
+                ApiCode.UNAUTHORIZED -> ResultException(
+                    t.code().toString(),
+                    "账号已失效,请退出账号重新登录"
+                )
                 ApiCode.FORBIDDEN,
                     //权限错误，需要实现
                 ApiCode.NOT_FOUND -> ResultException(
